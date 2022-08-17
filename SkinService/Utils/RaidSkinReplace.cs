@@ -27,6 +27,8 @@ namespace SkinService.Utils
 
         private static MethodInfo SpeakerMethod;
 
+        private static object Low;
+
         public static void RaidSkinReplaceInit()
         {
             BindingFlags flags = BindingFlags.Public | BindingFlags.Instance;
@@ -38,12 +40,12 @@ namespace SkinService.Utils
             x.GetMethod("ReplaceVoice", flags) != null);
 
             SpeakerMethod = SpeakerType.GetMethod("Init", flags);
+
+            Low = Traverse.Create(typeof(JobPriority)).Property("Low").GetValue<object>();
         }
 
         public static async void Replace(Dictionary<EBodyModelPart, string> customization, InfoClass infoclass, Profile profile)
         {
-            object Low = Traverse.Create(typeof(JobPriority)).Property("Low").GetValue<object>();
-
             await LoadBundlesAndCreatePools(profile, Low);
 
             EquipmentClass equipment = Traverse.Create(IsYourPlayer).Property("Equipment").GetValue<EquipmentClass>();
