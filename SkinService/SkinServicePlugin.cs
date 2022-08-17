@@ -201,7 +201,7 @@ namespace SkinService
         {
             iteminfo.Item = templates.Where(x => Traverse.Create(x).Field("BodyPart").GetValue<EBodyModelPart>() == part).ToArray();
             iteminfo.Id = iteminfo.Item.Select(x => Traverse.Create(x).Field("Id").GetValue<string>()).ToArray();
-            iteminfo.Localization = ItemLocalized(iteminfo.Item, iteminfo.Item.Select(x => Traverse.Create(x).Property("NameLocalizationKey").GetValue<string>()).ToArray());
+            iteminfo.Localization = ItemLocalized(iteminfo.Item);
         }
 
         public static void VoiceList(object voiceobject)
@@ -210,7 +210,7 @@ namespace SkinService
 
             Voice.Item = Voices.ToArray();
             Voice.Id = Voice.Item.Select(x => Traverse.Create(x).Field("Name").GetValue<string>()).ToArray();
-            Voice.Localization = ItemLocalized(Voice.Item, Voice.Item.Select(x => Traverse.Create(x).Property("NameLocalizationKey").GetValue<string>()).ToArray());
+            Voice.Localization = ItemLocalized(Voice.Item);
         }
 
         private static int GetIndex(string id, string[] ids)
@@ -239,9 +239,11 @@ namespace SkinService
             public string[] Localization;
         }
 
-        private static string[] ItemLocalized(object[] Item, string[] NameKey)
+        private static string[] ItemLocalized(object[] Item)
         {
             List<string> IdNames = new List<string>();
+
+            string[] NameKey = Item.Select(x => Traverse.Create(x).Property("NameLocalizationKey").GetValue<string>()).ToArray();
 
             foreach (string id in NameKey)
             {
