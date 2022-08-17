@@ -85,7 +85,7 @@
     <Compile Include="ConfigurationManagerAttributes.cs" />
     <Compile Include="Patches\PlayerPatch.cs" />
     <Compile Include="Utils\RaidSkinReplace.cs" />
-    <Compile Include="Utils\SkinGeneric.cs" />
+    <Compile Include="SkinGeneric.cs" />
     <Compile Include="Utils\Localized.cs" />
     <Compile Include="Patches\SkinItemPatch.cs" />
     <Compile Include="SkinServicePlugin.cs" />
