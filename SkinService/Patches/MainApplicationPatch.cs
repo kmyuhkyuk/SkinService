@@ -1,9 +1,9 @@
 ﻿using Aki.Reflection.Patching;
-using EFT;
 using HarmonyLib;
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
+using EFT;
 
 namespace SkinService.Patches
 {

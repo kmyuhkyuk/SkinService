@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-[CompilerGenerated]
 internal sealed class SkinGeneric<T, U>
 {
 	public T Action
@@ -22,27 +21,23 @@ internal sealed class SkinGeneric<T, U>
 		}
 	}
 
-	[DebuggerHidden]
 	public SkinGeneric(T Action, U skinids)
 	{
 		this.gparam_0 = Action;
 		this.gparam_1 = skinids;
 	}
 
-	[DebuggerHidden]
 	public override bool Equals(object value)
 	{
 		SkinGeneric<T, U> @class = value as SkinGeneric<T, U>;
 		return @class != null && EqualityComparer<T>.Default.Equals(this.gparam_0, @class.gparam_0) && EqualityComparer<U>.Default.Equals(this.gparam_1, @class.gparam_1);
 	}
 
-	[DebuggerHidden]
 	public override int GetHashCode()
 	{
 		return (332215222 + EqualityComparer<T>.Default.GetHashCode(this.gparam_0)) * -1521134296 + EqualityComparer<U>.Default.GetHashCode(this.gparam_1);
 	}
 
-	[DebuggerHidden]
 	public override string ToString()
 	{
 		IFormatProvider provider = null;
@@ -87,9 +82,7 @@ internal sealed class SkinGeneric<T, U>
 		return string.Format(provider, format, array);
 	}
 
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 	private readonly T gparam_0;
 
-	[DebuggerBrowsable(DebuggerBrowsableState.Never)]
 	private readonly U gparam_1;
 }

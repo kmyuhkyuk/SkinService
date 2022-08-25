@@ -46,11 +46,11 @@ namespace SkinService
 
         public static ItemInfo Voice { get; private set; } = new ItemInfo();
 
-        public static ConfigEntry<string> KeyHead { get; set; }
-        public static ConfigEntry<string> KeyBody { get; set; }
-        public static ConfigEntry<string> KeyFeet { get; set; }
-        public static ConfigEntry<string> KeyHands { get; set; }
-        public static ConfigEntry<string> KeyVoice { get; set; }
+        public static ConfigEntry<string> KeyHead;
+        public static ConfigEntry<string> KeyBody;
+        public static ConfigEntry<string> KeyFeet;
+        public static ConfigEntry<string> KeyHands;
+        public static ConfigEntry<string> KeyVoice;
 
         private void Start()
         {
