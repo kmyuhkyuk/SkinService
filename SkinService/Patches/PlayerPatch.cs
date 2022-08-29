@@ -23,7 +23,7 @@ namespace SkinService.Patches
             {
                 RaidSkinReplace.IsYourPlayer = __instance;
 
-                RaidSkinReplace.PlayerBody = __instance.gameObject.GetComponentInChildren<PlayerBody>();
+                RaidSkinReplace.PlayerBody = __instance.GetComponentInChildren<PlayerBody>();
             }
         }
     }
