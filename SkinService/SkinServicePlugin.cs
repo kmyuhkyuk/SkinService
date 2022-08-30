@@ -104,8 +104,11 @@ namespace SkinService
                     Save(allskinInfo.Who[0].Player, allskinInfo.Who[0].PlayerBody, allskinInfo.Who[0].Customization[num], allskinInfo.Who[0].InfoClass[num], allskinInfo.Who[0].Profile[num], Convert.ToBoolean(num));
 
                 }
-                else if (who == 1 && allwho > 2)
+                else if (who == 1)
                 {
+                    if (allwho <= 2)
+                        return;
+
                     for (int i = 2; i< allwho; i++)
                     {
                         Save(allskinInfo.Who[i].Player, allskinInfo.Who[i].PlayerBody, allskinInfo.Who[i].Customization[0], allskinInfo.Who[i].InfoClass[0], allskinInfo.Who[i].Profile[0], false);

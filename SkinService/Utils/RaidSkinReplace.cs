@@ -53,7 +53,7 @@ namespace SkinService.Utils
             body.UpdatePlayerRenders(player.PointOfView, infoclass.Side);
 
             //Voice
-            SpeakerMethod.Invoke(player.Speaker, new object[] { infoclass.Side, player.PlayerId, infoclass.Voice, true });
+            SpeakerMethod.Invoke(Traverse.Create(player).Field("Speaker").GetValue<object>(), new object[] { infoclass.Side, player.PlayerId, infoclass.Voice, true });
         }
 
         private static async Task LoadBundlesAndCreatePools(Profile profile, object yield)
