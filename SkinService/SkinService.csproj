@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationManagerAttributes.cs" />
+    <Compile Include="Patches\GameWorldPatch.cs" />
     <Compile Include="Patches\PlayerPatch.cs" />
     <Compile Include="Utils\RaidSkinReplace.cs" />
     <Compile Include="SkinGeneric.cs" />

@@ -27,19 +27,21 @@ namespace SkinService.Patches
 
             SkinServicePlugin.Session = __backEnd.Session;
 
-            SkinServicePlugin.Profile = new Profile[] 
+            SkinServicePlugin.AllSkinInfo.SkinInfo info = SkinServicePlugin.allskinInfo.Who[0];
+
+            info.Profile = new Profile[]
             {
                 Scavprofile,
                 Pmcprofile
             };
 
-            SkinServicePlugin.Customization = new Dictionary<EBodyModelPart, string>[]
+            info.Customization = new Dictionary<EBodyModelPart, string>[]
             {
                 Traverse.Create(Scavprofile).Field("Customization").GetValue<Dictionary<EBodyModelPart, string>>(),
                 Traverse.Create(Pmcprofile).Field("Customization").GetValue<Dictionary<EBodyModelPart, string>>()
             };
 
-            SkinServicePlugin.InfoClass = new InfoClass[]
+            info.InfoClass = new InfoClass[]
             {
                 Scavprofile.Info,
                 Pmcprofile.Info

@@ -3,7 +3,6 @@ using BepInEx.Configuration;
 using HarmonyLib;
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 using UnityEngine;
 using Comfort.Common;
@@ -16,77 +15,60 @@ namespace SkinService
     [BepInPlugin("com.kmyuhkyuk.SkinService", "kmyuhkyuk-SkinService", "1.0.0")]
     public class SkinServicePlugin : BaseUnityPlugin
     {
-        public static Profile[] Profile;
-
         public static ISession Session;
 
         public static MainApplication MainApplication;
 
-        public static InfoClass[] InfoClass;
+        public static AllSkinInfo allskinInfo = new AllSkinInfo();
 
-        public static object SkinItem;
-
-        public static object[] Templates;
-
-        public static Dictionary<EBodyModelPart, string>[] Customization;
+        private object[] Templates;
 
         private Dictionary<EBodyModelPart, string> oldCustomization;
 
-        public static IEnumerable<object> Voices;
-
         private string oldVoice;
 
-        public static ItemInfo Head { get; private set; } = new ItemInfo();
+        private SkinItemInfo skinitem = new SkinItemInfo();
 
-        public static ItemInfo Body { get; private set; } = new ItemInfo();
+        public static Action<object> LoadSkinItem;
 
-        public static ItemInfo Feet { get; private set; } = new ItemInfo();
+        public static Action LoadConfig;
 
-        public static ItemInfo Hands { get; private set; } = new ItemInfo();
-
-        public static ItemInfo Voice { get; private set; } = new ItemInfo();
-
-        public static ConfigEntry<string> KeyHead;
-        public static ConfigEntry<string> KeyBody;
-        public static ConfigEntry<string> KeyFeet;
-        public static ConfigEntry<string> KeyHands;
-        public static ConfigEntry<string> KeyVoice;
+        private ConfigEntry<string> KeyWho;
+        private ConfigEntry<string> KeyHead;
+        private ConfigEntry<string> KeyBody;
+        private ConfigEntry<string> KeyFeet;
+        private ConfigEntry<string> KeyHands;
+        private ConfigEntry<string> KeyVoice;
 
         private void Start()
         {
             Logger.LogInfo("Loaded: kmyuhkyuk-SkinService");
 
             new MainApplicationPatch().Enable();
-
             new SkinItemPatch().Enable();
-
             new PlayerPatch().Enable();
+            new GameWorldPatch().Enable();
 
-            Localized.LocalizedInit();
+            Localized.Init();
+            RaidSkinReplace.Init();
 
-            RaidSkinReplace.RaidSkinReplaceInit();
-
-            LoadSkinConfig();
+            LoadSkinItem += GetItem;
+            LoadConfig += LoadSkinConfig;
         }
 
-        async void LoadSkinConfig()
-        {
-            await SkinConfig();
-        }
-
-        async Task SkinConfig()
+        void LoadSkinConfig()
         {
             string MainSettings = "Skin Service Settings";
 
-            //Wait Game Load
-            while (SkinItem == null)
-                await Task.Yield();
+            KeyWho = Config.Bind<string>(MainSettings, "Who", allskinInfo.Name[0], new ConfigDescription("", new AcceptableValueList<string>(allskinInfo.Name.ToArray()), new ConfigurationManagerAttributes { Order = 9, HideDefaultButton = true }));
 
-            KeyBody = Config.Bind<string>(MainSettings, "Body", Body.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(Body.Localization), new ConfigurationManagerAttributes { Order = 7, HideDefaultButton = true }));
-            KeyFeet = Config.Bind<string>(MainSettings, "Feet", Feet.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(Feet.Localization), new ConfigurationManagerAttributes { Order = 6, HideDefaultButton = true }));
-            KeyHead = Config.Bind<string>(MainSettings, "Head", Head.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(Head.Localization), new ConfigurationManagerAttributes { Order = 5, HideDefaultButton = true }));
-            KeyHands = Config.Bind<string>(MainSettings, "Hands", Hands.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(Hands.Localization), new ConfigurationManagerAttributes { Order = 4, HideDefaultButton = true }));
-            KeyVoice = Config.Bind<string>(MainSettings, "Voice", Voice.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(Voice.Localization), new ConfigurationManagerAttributes { Order = 3, HideDefaultButton = true }));
+            KeyBody = Config.Bind<string>(MainSettings, "Body", skinitem.Body.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(skinitem.Body.Localization), new ConfigurationManagerAttributes { Order = 8, HideDefaultButton = true }));
+            KeyFeet = Config.Bind<string>(MainSettings, "Feet", skinitem.Feet.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(skinitem.Feet.Localization), new ConfigurationManagerAttributes { Order = 7, HideDefaultButton = true }));
+            KeyHead = Config.Bind<string>(MainSettings, "Head", skinitem.Head.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(skinitem.Head.Localization), new ConfigurationManagerAttributes { Order = 6, HideDefaultButton = true }));
+            KeyHands = Config.Bind<string>(MainSettings, "Hands", skinitem.Hands.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(skinitem.Hands.Localization), new ConfigurationManagerAttributes { Order = 5, HideDefaultButton = true }));
+            KeyVoice = Config.Bind<string>(MainSettings, "Voice", skinitem.Voice.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(skinitem.Voice.Localization), new ConfigurationManagerAttributes { Order = 4, HideDefaultButton = true }));
+
+            Config.Bind(MainSettings, "GetBotDrawer", "", new ConfigDescription("", null, new ConfigurationManagerAttributes { Order = 3, HideDefaultButton = true, CustomDrawer = GetBotDrawer, HideSettingName = true }));
 
             Config.Bind(MainSettings, "GetNowDrawer", "", new ConfigDescription("", null, new ConfigurationManagerAttributes { Order = 2, HideDefaultButton = true, CustomDrawer = GetNowDrawer, HideSettingName = true }));
 
@@ -95,24 +77,55 @@ namespace SkinService
             GetNow();
         }
 
+        void GetBotDrawer(ConfigEntryBase entry)
+        {
+            if (GUILayout.Button("GetBot", GUILayout.ExpandWidth(true)))
+            {
+                string old = KeyWho.Value;
+
+                Config.Remove(KeyWho.Definition);
+
+                KeyWho = Config.Bind<string>("Skin Service Settings", "Who", old, new ConfigDescription("", new AcceptableValueList<string>(allskinInfo.Name.ToArray()), new ConfigurationManagerAttributes { Order = 9, HideDefaultButton = true }));
+            }
+        }
+
         void SaveDrawer(ConfigEntryBase entry)
         {
             if (GUILayout.Button("Save", GUILayout.ExpandWidth(true)))
             {
                 int num = IsPmc();
 
-                Save(Customization[num], InfoClass[num], Profile[num], Convert.ToBoolean(num));
+                int who = IsWho();
+
+                int allwho = allskinInfo.Who.Count;
+
+                if (who == 0)
+                {
+                    Save(allskinInfo.Who[0].Player, allskinInfo.Who[0].PlayerBody, allskinInfo.Who[0].Customization[num], allskinInfo.Who[0].InfoClass[num], allskinInfo.Who[0].Profile[num], Convert.ToBoolean(num));
+
+                }
+                else if (who == 1 && allwho > 2)
+                {
+                    for (int i = 2; i< allwho; i++)
+                    {
+                        Save(allskinInfo.Who[i].Player, allskinInfo.Who[i].PlayerBody, allskinInfo.Who[i].Customization[0], allskinInfo.Who[i].InfoClass[0], allskinInfo.Who[i].Profile[0], false);
+                    }
+                }
+                else
+                {
+                    Save(allskinInfo.Who[who].Player, allskinInfo.Who[who].PlayerBody, allskinInfo.Who[who].Customization[0], allskinInfo.Who[who].InfoClass[0], allskinInfo.Who[who].Profile[0], false);
+                }
             }
         }
 
-        void Save(Dictionary<EBodyModelPart, string> customization, InfoClass infoclass, Profile profile, bool IsPmc)
+        void Save(Player player, PlayerBody body, Dictionary<EBodyModelPart, string> customization, InfoClass infoclass, Profile profile, bool IsPmc)
         {
             List<string> array = new List<string>()
             {
-                Body.Id[GetIndex(KeyBody.Value, Body.Localization)],
-                Feet.Id[GetIndex(KeyFeet.Value, Feet.Localization)],
-                Head.Id[GetIndex(KeyHead.Value, Head.Localization)],
-                Hands.Id[GetIndex(KeyHands.Value, Hands.Localization)]
+                skinitem.Body.Id[GetIndex(KeyBody.Value, skinitem.Body.Localization)],
+                skinitem.Feet.Id[GetIndex(KeyFeet.Value, skinitem.Feet.Localization)],
+                skinitem.Head.Id[GetIndex(KeyHead.Value, skinitem.Head.Localization)],
+                skinitem.Hands.Id[GetIndex(KeyHands.Value, skinitem.Hands.Localization)]
             };
 
             //Save old customization
@@ -126,7 +139,7 @@ namespace SkinService
             //Save old voice id
             oldVoice = infoclass.Voice;
 
-            infoclass.Voice = Voice.Id[GetIndex(KeyVoice.Value, Voice.Localization)];
+            infoclass.Voice = skinitem.Voice.Id[GetIndex(KeyVoice.Value, skinitem.Voice.Localization)];
 
             //Save To Local Profile
             if (IsPmc)
@@ -138,9 +151,9 @@ namespace SkinService
                 Session.ChangeVoice(infoclass.Voice, new Callback(VoiceBack));
             }
 
-            if (RaidSkinReplace.PlayerBody != null)
+            if (body != null)
             {
-                RaidSkinReplace.Replace(customization, infoclass, profile);
+                RaidSkinReplace.Replace(player, body, customization, infoclass, profile);
             }
         }
 
@@ -154,10 +167,13 @@ namespace SkinService
 
         void GetNow()
         {
-            KeyBody.Value = Body.Localization[GetNowIndex(EBodyModelPart.Body, Body.Id)];
-            KeyFeet.Value = Feet.Localization[GetNowIndex(EBodyModelPart.Feet, Feet.Id)];
-            KeyHead.Value = Head.Localization[GetNowIndex(EBodyModelPart.Head, Head.Id)];
-            KeyHands.Value = Hands.Localization[GetNowIndex(EBodyModelPart.Hands, Hands.Id)];
+            KeyBody.Value = skinitem.Body.Localization[GetNowPartIndex(EBodyModelPart.Body, skinitem.Body.Id)];
+            KeyFeet.Value = skinitem.Feet.Localization[GetNowPartIndex(EBodyModelPart.Feet, skinitem.Feet.Id)];
+            KeyHead.Value = skinitem.Head.Localization[GetNowPartIndex(EBodyModelPart.Head, skinitem.Head.Id)];
+            KeyHands.Value = skinitem.Hands.Localization[GetNowPartIndex(EBodyModelPart.Hands, skinitem.Hands.Id)];
+
+            KeyVoice.Value = skinitem.Voice.Localization[GetNowVoiceIndex(skinitem.Voice.Id)];
+
         }
 
         void ApplySkinChange(string[] ids,Callback onFinished)
@@ -171,7 +187,7 @@ namespace SkinService
             {
                 foreach (KeyValuePair<EBodyModelPart, string> keyValuePair in oldCustomization)
                 {
-                    Customization[1][keyValuePair.Key] = keyValuePair.Value;
+                    allskinInfo.Who[0].Customization[1][keyValuePair.Key] = keyValuePair.Value;
                 }
             }
         }
@@ -180,83 +196,164 @@ namespace SkinService
         {
             if (!result.Succeed)
             {
-                InfoClass[1].Voice = oldVoice;
+                allskinInfo.Who[0].InfoClass[1].Voice = oldVoice;
             }
         }
 
-        public static void SkinList(object skinobject)
+        void GetItem(object skinobject)
         {
             Templates = Traverse.Create(skinobject).Property("Templates").GetValue<object[]>();
 
-            GetSkinItem(EBodyModelPart.Body, Templates, Body);
+            GetSkin(EBodyModelPart.Body, Templates, skinitem.Body);
 
-            GetSkinItem(EBodyModelPart.Feet, Templates, Feet);
+            GetSkin(EBodyModelPart.Feet, Templates, skinitem.Feet);
 
-            GetSkinItem(EBodyModelPart.Head, Templates, Head);
+            GetSkin(EBodyModelPart.Head, Templates, skinitem.Head);
 
-            GetSkinItem(EBodyModelPart.Hands, Templates, Hands);
+            GetSkin(EBodyModelPart.Hands, Templates, skinitem.Hands);
+
+            GetVoice(skinobject, skinitem.Voice);
         }
 
-        private static void GetSkinItem(EBodyModelPart part, object[] templates, ItemInfo iteminfo)
+        void GetSkin(EBodyModelPart part, object[] templates, SkinItemInfo.ItemInfo iteminfo)
         {
             iteminfo.Item = templates.Where(x => Traverse.Create(x).Field("BodyPart").GetValue<EBodyModelPart>() == part).ToArray();
             iteminfo.Id = iteminfo.Item.Select(x => Traverse.Create(x).Field("Id").GetValue<string>()).ToArray();
             iteminfo.Localization = ItemLocalized(iteminfo.Item);
         }
 
-        public static void VoiceList(object voiceobject)
+        void GetVoice(object voiceobject, SkinItemInfo.ItemInfo iteminfo)
         {
-            Voices = Traverse.Create(voiceobject).Property("Voices").GetValue<IEnumerable<object>>();
+            IEnumerable<object> voices = Traverse.Create(voiceobject).Property("Voices").GetValue<IEnumerable<object>>();
 
-            Voice.Item = Voices.ToArray();
-            Voice.Id = Voice.Item.Select(x => Traverse.Create(x).Field("Name").GetValue<string>()).ToArray();
-            Voice.Localization = ItemLocalized(Voice.Item);
+            iteminfo.Item = voices.ToArray();
+            iteminfo.Id = skinitem.Voice.Item.Select(x => Traverse.Create(x).Field("Name").GetValue<string>()).ToArray();
+            iteminfo.Localization = ItemLocalized(skinitem.Voice.Item);
         }
 
-        private static int GetIndex(string id, string[] ids)
+        int GetIndex(string id, string[] ids)
         {
             return Array.FindIndex(ids, x => x == id);
         }
 
-        private static int GetNowIndex(EBodyModelPart part, string[] ids)
+        int GetNowPartIndex(EBodyModelPart part, string[] ids)
         {
-            string Now;
+            string now;
 
-            Customization[IsPmc()].TryGetValue(part, out Now);
+            int who = IsWho();
 
-            return GetIndex(Now, ids);
+            if (who != 0 && who != 1)
+            {
+                allskinInfo.Who[IsWho()].Customization[0].TryGetValue(part, out now);
+            }
+            else
+            {
+                allskinInfo.Who[0].Customization[IsPmc()].TryGetValue(part, out now);
+            }
+
+            return GetIndex(now, ids);
         }
 
-        private static int IsPmc()
+        int GetNowVoiceIndex(string[] ids)
+        {
+            string now;
+
+            int who = IsWho();
+
+            if (who != 0 && who != 1)
+            {
+                now = allskinInfo.Who[IsWho()].InfoClass[0].Voice;
+            }
+            else
+            {
+                now = allskinInfo.Who[0].InfoClass[IsPmc()].Voice;
+            }
+
+            return GetIndex(now, ids);
+        }
+
+        int IsWho()
+        {
+            return GetIndex(KeyWho.Value, allskinInfo.Name.ToArray());
+        }
+
+        int IsPmc()
         {
             return Convert.ToInt32(Traverse.Create(MainApplication).Field("_raidSettings").GetValue<RaidSettings>().IsPmc);
         }
 
-        public class ItemInfo
+        public class AllSkinInfo
         {
-            public object[] Item;
-            public string[] Id;
-            public string[] Localization;
+            public List<SkinInfo> Who = new List<SkinInfo>()
+            {
+                new SkinInfo(),
+                new SkinInfo()
+            };
+
+            public List<string> Name = new List<string>()
+            {
+                "Player",
+                "All Bot"
+            };
+
+            public class SkinInfo
+            {
+                public Player Player;
+
+                public PlayerBody PlayerBody;
+
+                public Profile[] Profile;
+
+                public InfoClass[] InfoClass;
+
+                public Dictionary<EBodyModelPart, string>[] Customization;
+            }
+
+            public void Clear()
+            {
+                Who.RemoveRange(2, Who.Count - 2);
+                Name.RemoveRange(2, Name.Count - 2);
+            }
         }
 
-        private static string[] ItemLocalized(object[] Item)
+        public class SkinItemInfo
+        {
+            public ItemInfo Head = new ItemInfo();
+
+            public ItemInfo Body = new ItemInfo();
+
+            public ItemInfo Feet = new ItemInfo();
+
+            public ItemInfo Hands = new ItemInfo();
+
+            public ItemInfo Voice = new ItemInfo();
+
+            public class ItemInfo
+            {
+                public object[] Item;
+                public string[] Id;
+                public string[] Localization;
+            }
+        }
+
+        string[] ItemLocalized(object[] Item)
         {
             List<string> IdNames = new List<string>();
 
-            string[] NameKey = Item.Select(x => Traverse.Create(x).Property("NameLocalizationKey").GetValue<string>()).ToArray();
+            string[] NameKeys = Item.Select(x => Traverse.Create(x).Property("NameLocalizationKey").GetValue<string>()).ToArray();
 
-            foreach (string id in NameKey)
+            foreach (string key in NameKeys)
             {
-                string Localization = Localized.localized(id, null);
+                string Localization = Localized.localized(key, null);
 
-                //If id no have localization else return name
-                if (Localization != id)
+                //If this key no has localization else return it name
+                if (Localization != key)
                 {
                     IdNames.Add(Localization);
                 }
                 else
                 {
-                    IdNames.Add(Traverse.Create(Item[GetIndex(id, NameKey)]).Field("Name").GetValue<string>());
+                    IdNames.Add(Traverse.Create(Item[GetIndex(key, NameKeys)]).Field("Name").GetValue<string>());
                 }    
             }
 

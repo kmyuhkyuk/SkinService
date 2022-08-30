@@ -12,7 +12,7 @@ namespace SkinService.Utils
 
         private static MethodInfo LocalizedMethod;
 
-        public static void LocalizedInit()
+        public static void Init()
         {
             LocalizedType = PatchConstants.EftTypes.Single(x =>
             x.GetMethod("ParseLocalization", BindingFlags.Public | BindingFlags.Static) != null);

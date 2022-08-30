@@ -19,11 +19,8 @@ namespace SkinService.Patches
         [PatchPostfix]
         private static void PatchPostfix(object __instance)
         {
-            SkinServicePlugin.SkinList(__instance);
-
-            SkinServicePlugin.VoiceList(__instance);
-
-            SkinServicePlugin.SkinItem = __instance;
+            SkinServicePlugin.LoadSkinItem(__instance);
+            SkinServicePlugin.LoadConfig();
         }
     }
 }

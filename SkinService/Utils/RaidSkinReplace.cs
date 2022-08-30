@@ -15,10 +15,6 @@ namespace SkinService.Utils
 {
     public class RaidSkinReplace
     {
-        public static PlayerBody PlayerBody;
-
-        public static Player IsYourPlayer;
-
         private static Type SpeakerType;
 
         private static MethodInfo PlayerBodyMethod;
@@ -29,7 +25,7 @@ namespace SkinService.Utils
 
         private static object Low;
 
-        public static void RaidSkinReplaceInit()
+        public static void Init()
         {
             BindingFlags flags = BindingFlags.Public | BindingFlags.Instance;
 
@@ -44,20 +40,20 @@ namespace SkinService.Utils
             Low = Traverse.Create(typeof(JobPriority)).Property("Low").GetValue<object>();
         }
 
-        public static async void Replace(Dictionary<EBodyModelPart, string> customization, InfoClass infoclass, Profile profile)
+        public static async void Replace(Player player, PlayerBody body, Dictionary<EBodyModelPart, string> customization, InfoClass infoclass, Profile profile)
         {
             await LoadBundlesAndCreatePools(profile, Low);
 
-            EquipmentClass equipment = Traverse.Create(IsYourPlayer).Property("Equipment").GetValue<EquipmentClass>();
+            EquipmentClass equipment = Traverse.Create(player).Property("Equipment").GetValue<EquipmentClass>();
 
-            BindableState<Item> itemlnHands = Traverse.Create(PlayerBody).Field("_itemInHands").GetValue<BindableState<Item>>();
+            BindableState<Item> itemlnHands = Traverse.Create(body).Field("_itemInHands").GetValue<BindableState<Item>>();
 
-            await (Task)PlayerBodyMethod.Invoke(PlayerBody, new object[] { customization, equipment, itemlnHands, LayerMask.NameToLayer("Player"), infoclass.Side });
+            await (Task)PlayerBodyMethod.Invoke(body, new object[] { customization, equipment, itemlnHands, LayerMask.NameToLayer("Player"), infoclass.Side });
 
-            PlayerBody.UpdatePlayerRenders(IsYourPlayer.PointOfView, infoclass.Side);
+            body.UpdatePlayerRenders(player.PointOfView, infoclass.Side);
 
             //Voice
-            SpeakerMethod.Invoke(IsYourPlayer.Speaker, new object[] { infoclass.Side, IsYourPlayer.PlayerId, infoclass.Voice, true });
+            SpeakerMethod.Invoke(player.Speaker, new object[] { infoclass.Side, player.PlayerId, infoclass.Voice, true });
         }
 
         private static async Task LoadBundlesAndCreatePools(Profile profile, object yield)
