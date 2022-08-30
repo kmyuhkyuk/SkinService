@@ -12,7 +12,7 @@ using SkinService.Utils;
 
 namespace SkinService
 {
-    [BepInPlugin("com.kmyuhkyuk.SkinService", "kmyuhkyuk-SkinService", "1.0.0")]
+    [BepInPlugin("com.kmyuhkyuk.SkinService", "kmyuhkyuk-SkinService", "1.1.0")]
     public class SkinServicePlugin : BaseUnityPlugin
     {
         public static ISession Session;
