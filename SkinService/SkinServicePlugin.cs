@@ -75,7 +75,7 @@ namespace SkinService
 
         void GetBotDrawer(ConfigEntryBase entry)
         {
-            if (GUILayout.Button("GetBot", GUILayout.ExpandWidth(true)))
+            if (GUILayout.Button("Get All Bot", GUILayout.ExpandWidth(true)))
             {
                 string old = settingsdata.KeyWho.Value;
 
