@@ -6,7 +6,7 @@ using EFT;
 
 namespace SkinService.Utils
 {
-    public static class Localized
+    public class Localized
     {
         private static Type LocalizedType;
 

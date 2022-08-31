@@ -29,16 +29,12 @@ namespace SkinService
 
         private SkinItemInfo skinitem = new SkinItemInfo();
 
+        private SettingsData settingsdata = new SettingsData();
+
         public static Action<object> LoadSkinItem;
 
         public static Action LoadConfig;
 
-        private ConfigEntry<string> KeyWho;
-        private ConfigEntry<string> KeyHead;
-        private ConfigEntry<string> KeyBody;
-        private ConfigEntry<string> KeyFeet;
-        private ConfigEntry<string> KeyHands;
-        private ConfigEntry<string> KeyVoice;
 
         private void Start()
         {
@@ -60,13 +56,13 @@ namespace SkinService
         {
             string MainSettings = "Skin Service Settings";
 
-            KeyWho = Config.Bind<string>(MainSettings, "Who", allskinInfo.Name[0], new ConfigDescription("", new AcceptableValueList<string>(allskinInfo.Name.ToArray()), new ConfigurationManagerAttributes { Order = 9, HideDefaultButton = true }));
+            settingsdata.KeyWho = Config.Bind<string>(MainSettings, "Who", allskinInfo.Name[0], new ConfigDescription("", new AcceptableValueList<string>(allskinInfo.Name.ToArray()), new ConfigurationManagerAttributes { Order = 9, HideDefaultButton = true }));
 
-            KeyBody = Config.Bind<string>(MainSettings, "Body", skinitem.Body.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(skinitem.Body.Localization), new ConfigurationManagerAttributes { Order = 8, HideDefaultButton = true }));
-            KeyFeet = Config.Bind<string>(MainSettings, "Feet", skinitem.Feet.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(skinitem.Feet.Localization), new ConfigurationManagerAttributes { Order = 7, HideDefaultButton = true }));
-            KeyHead = Config.Bind<string>(MainSettings, "Head", skinitem.Head.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(skinitem.Head.Localization), new ConfigurationManagerAttributes { Order = 6, HideDefaultButton = true }));
-            KeyHands = Config.Bind<string>(MainSettings, "Hands", skinitem.Hands.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(skinitem.Hands.Localization), new ConfigurationManagerAttributes { Order = 5, HideDefaultButton = true }));
-            KeyVoice = Config.Bind<string>(MainSettings, "Voice", skinitem.Voice.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(skinitem.Voice.Localization), new ConfigurationManagerAttributes { Order = 4, HideDefaultButton = true }));
+            settingsdata.KeyBody = Config.Bind<string>(MainSettings, "Body", skinitem.Body.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(skinitem.Body.Localization), new ConfigurationManagerAttributes { Order = 8, HideDefaultButton = true }));
+            settingsdata.KeyFeet = Config.Bind<string>(MainSettings, "Feet", skinitem.Feet.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(skinitem.Feet.Localization), new ConfigurationManagerAttributes { Order = 7, HideDefaultButton = true }));
+            settingsdata.KeyHead = Config.Bind<string>(MainSettings, "Head", skinitem.Head.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(skinitem.Head.Localization), new ConfigurationManagerAttributes { Order = 6, HideDefaultButton = true }));
+            settingsdata.KeyHands = Config.Bind<string>(MainSettings, "Hands", skinitem.Hands.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(skinitem.Hands.Localization), new ConfigurationManagerAttributes { Order = 5, HideDefaultButton = true }));
+            settingsdata.KeyVoice = Config.Bind<string>(MainSettings, "Voice", skinitem.Voice.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(skinitem.Voice.Localization), new ConfigurationManagerAttributes { Order = 4, HideDefaultButton = true }));
 
             Config.Bind(MainSettings, "GetBotDrawer", "", new ConfigDescription("", null, new ConfigurationManagerAttributes { Order = 3, HideDefaultButton = true, CustomDrawer = GetBotDrawer, HideSettingName = true }));
 
@@ -81,11 +77,11 @@ namespace SkinService
         {
             if (GUILayout.Button("GetBot", GUILayout.ExpandWidth(true)))
             {
-                string old = KeyWho.Value;
+                string old = settingsdata.KeyWho.Value;
 
-                Config.Remove(KeyWho.Definition);
+                Config.Remove(settingsdata.KeyWho.Definition);
 
-                KeyWho = Config.Bind<string>("Skin Service Settings", "Who", old, new ConfigDescription("", new AcceptableValueList<string>(allskinInfo.Name.ToArray()), new ConfigurationManagerAttributes { Order = 9, HideDefaultButton = true }));
+                settingsdata.KeyWho = Config.Bind<string>("Skin Service Settings", "Who", old, new ConfigDescription("", new AcceptableValueList<string>(allskinInfo.Name.ToArray()), new ConfigurationManagerAttributes { Order = 9, HideDefaultButton = true }));
             }
         }
 
@@ -125,10 +121,10 @@ namespace SkinService
         {
             List<string> array = new List<string>()
             {
-                skinitem.Body.Id[GetIndex(KeyBody.Value, skinitem.Body.Localization)],
-                skinitem.Feet.Id[GetIndex(KeyFeet.Value, skinitem.Feet.Localization)],
-                skinitem.Head.Id[GetIndex(KeyHead.Value, skinitem.Head.Localization)],
-                skinitem.Hands.Id[GetIndex(KeyHands.Value, skinitem.Hands.Localization)]
+                skinitem.Body.Id[GetIndex(settingsdata.KeyBody.Value, skinitem.Body.Localization)],
+                skinitem.Feet.Id[GetIndex(settingsdata.KeyFeet.Value, skinitem.Feet.Localization)],
+                skinitem.Head.Id[GetIndex(settingsdata.KeyHead.Value, skinitem.Head.Localization)],
+                skinitem.Hands.Id[GetIndex(settingsdata.KeyHands.Value, skinitem.Hands.Localization)]
             };
 
             //Save old customization
@@ -142,7 +138,7 @@ namespace SkinService
             //Save old voice id
             oldVoice = infoclass.Voice;
 
-            infoclass.Voice = skinitem.Voice.Id[GetIndex(KeyVoice.Value, skinitem.Voice.Localization)];
+            infoclass.Voice = skinitem.Voice.Id[GetIndex(settingsdata.KeyVoice.Value, skinitem.Voice.Localization)];
 
             //Save To Local Profile
             if (IsPmc)
@@ -170,12 +166,12 @@ namespace SkinService
 
         void GetNow()
         {
-            KeyBody.Value = skinitem.Body.Localization[GetNowPartIndex(EBodyModelPart.Body, skinitem.Body.Id)];
-            KeyFeet.Value = skinitem.Feet.Localization[GetNowPartIndex(EBodyModelPart.Feet, skinitem.Feet.Id)];
-            KeyHead.Value = skinitem.Head.Localization[GetNowPartIndex(EBodyModelPart.Head, skinitem.Head.Id)];
-            KeyHands.Value = skinitem.Hands.Localization[GetNowPartIndex(EBodyModelPart.Hands, skinitem.Hands.Id)];
+            settingsdata.KeyBody.Value = skinitem.Body.Localization[GetNowPartIndex(EBodyModelPart.Body, skinitem.Body.Id)];
+            settingsdata.KeyFeet.Value = skinitem.Feet.Localization[GetNowPartIndex(EBodyModelPart.Feet, skinitem.Feet.Id)];
+            settingsdata.KeyHead.Value = skinitem.Head.Localization[GetNowPartIndex(EBodyModelPart.Head, skinitem.Head.Id)];
+            settingsdata.KeyHands.Value = skinitem.Hands.Localization[GetNowPartIndex(EBodyModelPart.Hands, skinitem.Hands.Id)];
 
-            KeyVoice.Value = skinitem.Voice.Localization[GetNowVoiceIndex(skinitem.Voice.Id)];
+            settingsdata.KeyVoice.Value = skinitem.Voice.Localization[GetNowVoiceIndex(skinitem.Voice.Id)];
 
         }
 
@@ -277,7 +273,7 @@ namespace SkinService
 
         int IsWho()
         {
-            return GetIndex(KeyWho.Value, allskinInfo.Name.ToArray());
+            return GetIndex(settingsdata.KeyWho.Value, allskinInfo.Name.ToArray());
         }
 
         int IsPmc()
@@ -361,6 +357,16 @@ namespace SkinService
             }
 
             return IdNames.ToArray();
+        }
+
+        public class SettingsData
+        {
+            public ConfigEntry<string> KeyWho;
+            public ConfigEntry<string> KeyHead;
+            public ConfigEntry<string> KeyBody;
+            public ConfigEntry<string> KeyFeet;
+            public ConfigEntry<string> KeyHands;
+            public ConfigEntry<string> KeyVoice;
         }
     }
 }
