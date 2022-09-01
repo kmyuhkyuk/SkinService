@@ -35,7 +35,6 @@ namespace SkinService
 
         public static Action LoadConfig;
 
-
         private void Start()
         {
             Logger.LogInfo("Loaded: kmyuhkyuk-SkinService");
