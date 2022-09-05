@@ -47,8 +47,8 @@ namespace SkinService
             Localized.Init();
             RaidSkinReplace.Init();
 
-            LoadSkinItem += GetItem;
-            LoadConfig += LoadSkinConfig;
+            LoadSkinItem = GetItem;
+            LoadConfig = LoadSkinConfig;
         }
 
         void LoadSkinConfig()
