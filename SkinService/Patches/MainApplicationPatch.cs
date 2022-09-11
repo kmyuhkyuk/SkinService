@@ -11,7 +11,7 @@ namespace SkinService.Patches
     {
         protected override MethodBase GetTargetMethod()
         {
-            return typeof(MainApplication).GetMethods(BindingFlags.NonPublic | BindingFlags.Instance).First(x => x.IsAssembly);
+            return typeof(MainApplication).GetMethods(BindingFlags.NonPublic | BindingFlags.Instance).Single(x => x.IsAssembly);
         }
 
         [PatchPostfix]
