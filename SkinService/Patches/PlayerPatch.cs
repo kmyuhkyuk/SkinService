@@ -4,15 +4,12 @@ using HarmonyLib;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Comfort.Common;
 using EFT;
 
 namespace SkinService.Patches
 {
     public class PlayerPatch : ModulePatch
     {
-        private static bool? Is231Up;
-
         protected override MethodBase GetTargetMethod()
         {
             return typeof(Player).GetMethod("Init", PatchConstants.PrivateFlags);
@@ -23,23 +20,7 @@ namespace SkinService.Patches
         {
             await __result;
 
-            if (!Is231Up.HasValue)
-            {
-                Is231Up = typeof(Player).GetProperty("IsYourPlayer").GetSetMethod() == null;
-            }
-
-            bool isyouplayer;
-
-            if ((bool)Is231Up)
-            {
-                isyouplayer = __instance.IsYourPlayer;
-            }
-            else
-            {
-                isyouplayer = Singleton<GameWorld>.Instance.AllPlayers[0] == __instance;
-            }
-
-            if (isyouplayer)
+            if (__instance.IsYourPlayer)
             {
                 SkinServicePlugin.allskinInfo.Who[0].Player = __instance;
                 SkinServicePlugin.allskinInfo.Who[0].PlayerBody = __instance.PlayerBody;
