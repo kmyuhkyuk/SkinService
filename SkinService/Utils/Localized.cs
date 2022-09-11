@@ -15,7 +15,7 @@ namespace SkinService.Utils
         public static void Init()
         {
             LocalizedType = PatchConstants.EftTypes.Single(x =>
-            x.GetMethod("ParseLocalization", BindingFlags.Public | BindingFlags.Static) != null);
+            x.GetMethod("ParseLocalization", BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance) != null);
 
             LocalizedMethod = LocalizedType.GetMethods().Single(x => x.Name == "Localized"
             && x.GetParameters().Length == 2

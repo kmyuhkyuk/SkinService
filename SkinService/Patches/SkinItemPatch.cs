@@ -9,7 +9,7 @@ namespace SkinService.Patches
     {
         protected override MethodBase GetTargetMethod()
         {
-            BindingFlags flags = BindingFlags.Instance | BindingFlags.Public;
+            BindingFlags flags = BindingFlags.Public | BindingFlags.Instance;
 
             return PatchConstants.EftTypes.Single(x =>
             x.GetMethod("GetAnyCustomizationItem", flags) != null)

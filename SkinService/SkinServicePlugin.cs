@@ -240,7 +240,7 @@ namespace SkinService
 
             int who = IsWho();
 
-            if (who != 0 && who != 1)
+            if (who > 1)
             {
                 allskinInfo.Who[IsWho()].Customization[0].TryGetValue(part, out now);
             }
@@ -258,7 +258,7 @@ namespace SkinService
 
             int who = IsWho();
 
-            if (who != 0 && who != 1)
+            if (who > 1)
             {
                 now = allskinInfo.Who[IsWho()].InfoClass[0].Voice;
             }
