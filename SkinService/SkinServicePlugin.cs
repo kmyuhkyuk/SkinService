@@ -120,10 +120,10 @@ namespace SkinService
         {
             List<string> array = new List<string>()
             {
-                skinitem.Body.Id[GetIndex(settingsdata.KeyBody.Value, skinitem.Body.Localization)],
-                skinitem.Feet.Id[GetIndex(settingsdata.KeyFeet.Value, skinitem.Feet.Localization)],
-                skinitem.Head.Id[GetIndex(settingsdata.KeyHead.Value, skinitem.Head.Localization)],
-                skinitem.Hands.Id[GetIndex(settingsdata.KeyHands.Value, skinitem.Hands.Localization)]
+                skinitem.Body.Id[skinitem.Body.Localization.IndexOf(settingsdata.KeyBody.Value)],
+                skinitem.Feet.Id[skinitem.Feet.Localization.IndexOf(settingsdata.KeyFeet.Value)],
+                skinitem.Head.Id[skinitem.Head.Localization.IndexOf(settingsdata.KeyHead.Value)],
+                skinitem.Hands.Id[skinitem.Hands.Localization.IndexOf(settingsdata.KeyHands.Value)]
             };
 
             //Save old customization
@@ -137,7 +137,7 @@ namespace SkinService
             //Save old voice id
             oldVoice = infoclass.Voice;
 
-            infoclass.Voice = skinitem.Voice.Id[GetIndex(settingsdata.KeyVoice.Value, skinitem.Voice.Localization)];
+            infoclass.Voice = skinitem.Voice.Id[skinitem.Voice.Localization.IndexOf(settingsdata.KeyVoice.Value)];
 
             //Save To Local Profile
             if (IsPmc)
@@ -229,11 +229,6 @@ namespace SkinService
             iteminfo.Localization = ItemLocalized(skinitem.Voice.Item);
         }
 
-        int GetIndex(string id, string[] ids)
-        {
-            return Array.FindIndex(ids, x => x == id);
-        }
-
         int GetNowPartIndex(EBodyModelPart part, string[] ids)
         {
             string now;
@@ -249,7 +244,7 @@ namespace SkinService
                 allskinInfo.Who[0].Customization[IsPmc()].TryGetValue(part, out now);
             }
 
-            return GetIndex(now, ids);
+            return ids.IndexOf(now);
         }
 
         int GetNowVoiceIndex(string[] ids)
@@ -267,12 +262,12 @@ namespace SkinService
                 now = allskinInfo.Who[0].InfoClass[IsPmc()].Voice;
             }
 
-            return GetIndex(now, ids);
+            return ids.IndexOf(now);
         }
 
         int IsWho()
         {
-            return GetIndex(settingsdata.KeyWho.Value, allskinInfo.Name.ToArray());
+            return allskinInfo.Name.IndexOf(settingsdata.KeyWho.Value);
         }
 
         int IsPmc()
@@ -351,7 +346,7 @@ namespace SkinService
                 }
                 else
                 {
-                    IdNames.Add(Traverse.Create(Item[GetIndex(key, NameKeys)]).Field("Name").GetValue<string>());
+                    IdNames.Add(Traverse.Create(Item[NameKeys.IndexOf(key)]).Field("Name").GetValue<string>());
                 }    
             }
 
