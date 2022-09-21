@@ -101,12 +101,12 @@ namespace SkinService
                 }
                 else if (who == 1)
                 {
-                    if (allwho <= 2)
-                        return;
-
-                    for (int i = 2; i< allwho; i++)
+                    if (allwho > 2)
                     {
-                        Save(allskinInfo.Who[i].Player, allskinInfo.Who[i].PlayerBody, allskinInfo.Who[i].Customization[0], allskinInfo.Who[i].InfoClass[0], allskinInfo.Who[i].Profile[0], false);
+                        for (int i = 2; i < allwho; i++)
+                        {
+                            Save(allskinInfo.Who[i].Player, allskinInfo.Who[i].PlayerBody, allskinInfo.Who[i].Customization[0], allskinInfo.Who[i].InfoClass[0], allskinInfo.Who[i].Profile[0], false);
+                        }
                     }
                 }
                 else
