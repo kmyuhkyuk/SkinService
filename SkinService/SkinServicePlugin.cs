@@ -33,8 +33,6 @@ namespace SkinService
 
         public static Action<object> LoadSkinItem;
 
-        public static Action LoadConfig;
-
         private void Start()
         {
             Logger.LogInfo("Loaded: kmyuhkyuk-SkinService");
@@ -48,7 +46,6 @@ namespace SkinService
             RaidSkinReplace.Init();
 
             LoadSkinItem = GetItem;
-            LoadConfig = LoadSkinConfig;
         }
 
         void LoadSkinConfig()
@@ -211,6 +208,8 @@ namespace SkinService
             GetSkin(EBodyModelPart.Hands, Templates, skinitem.Hands);
 
             GetVoice(skinobject, skinitem.Voice);
+
+            LoadSkinConfig();
         }
 
         void GetSkin(EBodyModelPart part, object[] templates, SkinItemInfo.ItemInfo iteminfo)

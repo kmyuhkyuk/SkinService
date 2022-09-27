@@ -20,7 +20,6 @@ namespace SkinService.Patches
         private static void PatchPostfix(object __instance)
         {
             SkinServicePlugin.LoadSkinItem(__instance);
-            SkinServicePlugin.LoadConfig();
         }
     }
 }
