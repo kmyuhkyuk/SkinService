@@ -173,7 +173,7 @@ namespace SkinService
 
         void ApplySkinChange(string[] ids,Callback onFinished)
         {
-            Session.SendOperationRightNow(new SkinGeneric<string, string[]>("ChangeCustomization", ids), onFinished);
+            Session.SendOperationRightNow(new SkinClass<string, string[]>("ChangeCustomization", ids), onFinished);
         }
 
         void SkinBack(IResult response)
@@ -330,6 +330,18 @@ namespace SkinService
                 public object[] Item;
                 public string[] Id;
                 public string[] Localization;
+            }
+        }
+
+        public class SkinClass <T, V>
+        {
+            public T Action;
+            public V Skinids;
+
+            public SkinClass (T name, V value)
+            {
+                Action = name;
+                Skinids = value;
             }
         }
 
