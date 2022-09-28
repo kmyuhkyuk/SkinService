@@ -47,7 +47,7 @@ namespace SkinService.Patches
 
                 info.Customization = new Dictionary<EBodyModelPart, string>[]
                 {
-                    Traverse.Create(profile).Field("Customization").GetValue<Dictionary<EBodyModelPart, string>>(),
+                    Traverse.Create(profile).Field("Customization").GetValue<Dictionary<EBodyModelPart, string>>()
                 };
 
                 SkinServicePlugin.allskininfo.Who.Add(info);
