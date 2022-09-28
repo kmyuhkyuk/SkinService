@@ -200,11 +200,8 @@ namespace SkinService
             Templates = Traverse.Create(skinobject).Property("Templates").GetValue<object[]>();
 
             GetSkin(EBodyModelPart.Body, Templates, skinitem.Body);
-
             GetSkin(EBodyModelPart.Feet, Templates, skinitem.Feet);
-
             GetSkin(EBodyModelPart.Head, Templates, skinitem.Head);
-
             GetSkin(EBodyModelPart.Hands, Templates, skinitem.Hands);
 
             GetVoice(skinobject, skinitem.Voice);
