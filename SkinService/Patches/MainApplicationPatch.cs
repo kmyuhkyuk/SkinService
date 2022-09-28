@@ -27,7 +27,7 @@ namespace SkinService.Patches
 
             SkinServicePlugin.Session = __backEnd.Session;
 
-            SkinServicePlugin.AllSkinInfo.SkinInfo info = SkinServicePlugin.allskinInfo.Who[0];
+            SkinServicePlugin.AllSkinInfo.SkinInfo info = SkinServicePlugin.allskininfo.Who[0];
 
             info.Profile = new Profile[]
             {
