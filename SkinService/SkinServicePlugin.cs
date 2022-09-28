@@ -338,7 +338,7 @@ namespace SkinService
             public T Action;
             public V Skinids;
 
-            public SkinClass (T name, V value)
+            public SkinClass(T name, V value)
             {
                 Action = name;
                 Skinids = value;
