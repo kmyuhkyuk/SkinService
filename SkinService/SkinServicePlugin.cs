@@ -19,7 +19,7 @@ namespace SkinService
 
         public static MainApplication MainApplication;
 
-        public static AllSkinInfo allskinInfo = new AllSkinInfo();
+        public static AllSkinInfo allskininfo = new AllSkinInfo();
 
         private object[] Templates;
 
@@ -52,7 +52,7 @@ namespace SkinService
         {
             string MainSettings = "Skin Service Settings";
 
-            settingsdata.KeyWho = Config.Bind<string>(MainSettings, "Who", allskinInfo.Name[0], new ConfigDescription("", new AcceptableValueList<string>(allskinInfo.Name.ToArray()), new ConfigurationManagerAttributes { Order = 9, HideDefaultButton = true }));
+            settingsdata.KeyWho = Config.Bind<string>(MainSettings, "Who", allskininfo.Name[0], new ConfigDescription("", new AcceptableValueList<string>(allskininfo.Name.ToArray()), new ConfigurationManagerAttributes { Order = 9, HideDefaultButton = true }));
 
             settingsdata.KeyBody = Config.Bind<string>(MainSettings, "Body", skinitem.Body.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(skinitem.Body.Localization), new ConfigurationManagerAttributes { Order = 8, HideDefaultButton = true }));
             settingsdata.KeyFeet = Config.Bind<string>(MainSettings, "Feet", skinitem.Feet.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(skinitem.Feet.Localization), new ConfigurationManagerAttributes { Order = 7, HideDefaultButton = true }));
@@ -77,7 +77,7 @@ namespace SkinService
 
                 Config.Remove(settingsdata.KeyWho.Definition);
 
-                settingsdata.KeyWho = Config.Bind<string>("Skin Service Settings", "Who", old, new ConfigDescription("", new AcceptableValueList<string>(allskinInfo.Name.ToArray()), new ConfigurationManagerAttributes { Order = 9, HideDefaultButton = true }));
+                settingsdata.KeyWho = Config.Bind<string>("Skin Service Settings", "Who", old, new ConfigDescription("", new AcceptableValueList<string>(allskininfo.Name.ToArray()), new ConfigurationManagerAttributes { Order = 9, HideDefaultButton = true }));
             }
         }
 
@@ -89,11 +89,11 @@ namespace SkinService
 
                 int who = IsWho();
 
-                int allwho = allskinInfo.Who.Count;
+                int allwho = allskininfo.Who.Count;
 
                 if (who == 0)
                 {
-                    Save(allskinInfo.Who[0].Player, allskinInfo.Who[0].PlayerBody, allskinInfo.Who[0].Customization[num], allskinInfo.Who[0].InfoClass[num], allskinInfo.Who[0].Profile[num], Convert.ToBoolean(num));
+                    Save(allskininfo.Who[0].Player, allskininfo.Who[0].PlayerBody, allskininfo.Who[0].Customization[num], allskininfo.Who[0].InfoClass[num], allskininfo.Who[0].Profile[num], Convert.ToBoolean(num));
 
                 }
                 else if (who == 1)
@@ -102,13 +102,13 @@ namespace SkinService
                     {
                         for (int i = 2; i < allwho; i++)
                         {
-                            Save(allskinInfo.Who[i].Player, allskinInfo.Who[i].PlayerBody, allskinInfo.Who[i].Customization[0], allskinInfo.Who[i].InfoClass[0], allskinInfo.Who[i].Profile[0], false);
+                            Save(allskininfo.Who[i].Player, allskininfo.Who[i].PlayerBody, allskininfo.Who[i].Customization[0], allskininfo.Who[i].InfoClass[0], allskininfo.Who[i].Profile[0], false);
                         }
                     }
                 }
                 else
                 {
-                    Save(allskinInfo.Who[who].Player, allskinInfo.Who[who].PlayerBody, allskinInfo.Who[who].Customization[0], allskinInfo.Who[who].InfoClass[0], allskinInfo.Who[who].Profile[0], false);
+                    Save(allskininfo.Who[who].Player, allskininfo.Who[who].PlayerBody, allskininfo.Who[who].Customization[0], allskininfo.Who[who].InfoClass[0], allskininfo.Who[who].Profile[0], false);
                 }
             }
         }
@@ -182,7 +182,7 @@ namespace SkinService
             {
                 foreach (KeyValuePair<EBodyModelPart, string> keyValuePair in oldCustomization)
                 {
-                    allskinInfo.Who[0].Customization[1][keyValuePair.Key] = keyValuePair.Value;
+                    allskininfo.Who[0].Customization[1][keyValuePair.Key] = keyValuePair.Value;
                 }
             }
         }
@@ -191,7 +191,7 @@ namespace SkinService
         {
             if (!result.Succeed)
             {
-                allskinInfo.Who[0].InfoClass[1].Voice = oldVoice;
+                allskininfo.Who[0].InfoClass[1].Voice = oldVoice;
             }
         }
 
@@ -241,11 +241,11 @@ namespace SkinService
 
             if (who > 1)
             {
-                allskinInfo.Who[who].Customization[0].TryGetValue(part, out now);
+                allskininfo.Who[who].Customization[0].TryGetValue(part, out now);
             }
             else
             {
-                allskinInfo.Who[0].Customization[IsPmc()].TryGetValue(part, out now);
+                allskininfo.Who[0].Customization[IsPmc()].TryGetValue(part, out now);
             }
 
             return GetIndex(now, ids);
@@ -259,11 +259,11 @@ namespace SkinService
 
             if (who > 1)
             {
-                now = allskinInfo.Who[who].InfoClass[0].Voice;
+                now = allskininfo.Who[who].InfoClass[0].Voice;
             }
             else
             {
-                now = allskinInfo.Who[0].InfoClass[IsPmc()].Voice;
+                now = allskininfo.Who[0].InfoClass[IsPmc()].Voice;
             }
 
             return GetIndex(now, ids);
@@ -271,7 +271,7 @@ namespace SkinService
 
         int IsWho()
         {
-            return GetIndex(settingsdata.KeyWho.Value, allskinInfo.Name.ToArray());
+            return GetIndex(settingsdata.KeyWho.Value, allskininfo.Name.ToArray());
         }
 
         int IsPmc()
