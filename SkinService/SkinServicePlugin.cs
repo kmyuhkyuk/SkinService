@@ -171,7 +171,7 @@ namespace SkinService
 
         }
 
-        void ApplySkinChange(string[] ids,Callback onFinished)
+        void ApplySkinChange(string[] ids, Callback onFinished)
         {
             Session.SendOperationRightNow(new SkinClass<string, string[]>("ChangeCustomization", ids), onFinished);
         }
