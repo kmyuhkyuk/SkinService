@@ -15,13 +15,13 @@ namespace SkinService.Utils
 {
     public class RaidSkinReplace
     {
-        private static Type SpeakerType;
+        private static Func<PlayerBody, object, object, BindableState<Item>, int, EPlayerSide, Task> RefPlayerBody;
 
-        private static MethodInfo PlayerBodyMethod;
+        private static Func<PoolManager, PoolManager.PoolsCategory, PoolManager.AssemblyType, ResourceKey[], object, object, CancellationToken, Task> RefPoolManager;
 
-        private static MethodInfo PoolManagerMethod;
+        private static RefHelp.FieldRef<Player, object> RefSpeaker;
 
-        private static MethodInfo SpeakerMethod;
+        private static Action<object, EPlayerSide, int, string, bool> RefReplaceVoice;
 
         private static object Low;
 
@@ -29,13 +29,13 @@ namespace SkinService.Utils
         {
             BindingFlags flags = BindingFlags.Public | BindingFlags.Instance;
 
-            PlayerBodyMethod = typeof(PlayerBody).GetMethod("Init", flags);
-            PoolManagerMethod = typeof(PoolManager).GetMethod("LoadBundlesAndCreatePools", flags);
+            RefPlayerBody = RefHelp.ObjectMethodDelegate<Func<PlayerBody, object, object, BindableState<Item>, int, EPlayerSide, Task>>(typeof(PlayerBody).GetMethod("Init", flags));
 
-            SpeakerType = PatchConstants.EftTypes.Single(x =>
-            x.GetMethod("ReplaceVoice", flags) != null);
+            RefPoolManager = RefHelp.ObjectMethodDelegate<Func<PoolManager, PoolManager.PoolsCategory, PoolManager.AssemblyType, ResourceKey[], object, object, CancellationToken, Task>>(typeof(PoolManager).GetMethod("LoadBundlesAndCreatePools", flags));
 
-            SpeakerMethod = SpeakerType.GetMethod("Init", flags);
+            RefSpeaker = RefHelp.FieldRef<Player, object>.Create("Speaker");
+
+            RefReplaceVoice = RefHelp.ObjectMethodDelegate<Action<object, EPlayerSide, int, string, bool>>(RefHelp.GetEftType(x => x.GetMethod("ReplaceVoice", flags) != null).GetMethod("Init", flags));
 
             Low = Traverse.Create(typeof(JobPriority)).Property("Low").GetValue<object>();
         }
@@ -48,19 +48,19 @@ namespace SkinService.Utils
 
             BindableState<Item> itemlnHands = Traverse.Create(body).Field("_itemInHands").GetValue<BindableState<Item>>();
 
-            await (Task)PlayerBodyMethod.Invoke(body, new object[] { customization, equipment, itemlnHands, LayerMask.NameToLayer("Player"), infoclass.Side });
+            await RefPlayerBody(body, customization, equipment, itemlnHands, LayerMask.NameToLayer("Player"), infoclass.Side);
 
             body.UpdatePlayerRenders(player.PointOfView, infoclass.Side);
 
             //Voice
-            SpeakerMethod.Invoke(Traverse.Create(player).Field("Speaker").GetValue<object>(), new object[] { infoclass.Side, player.PlayerId, infoclass.Voice, true });
+            RefReplaceVoice(RefSpeaker.GetValue(player), infoclass.Side, player.PlayerId, infoclass.Voice, true);
         }
 
         private static async Task LoadBundlesAndCreatePools(Profile profile, object yield)
         {
             ResourceKey[] resources = profile.GetAllPrefabPaths(true).ToArray<ResourceKey>();
 
-            await (Task)PoolManagerMethod.Invoke(Singleton<PoolManager>.Instance, new object[] { PoolManager.PoolsCategory.Raid, PoolManager.AssemblyType.Local, resources, yield, null, default(CancellationToken) });
+            await RefPoolManager(Singleton<PoolManager>.Instance, PoolManager.PoolsCategory.Raid, PoolManager.AssemblyType.Local, resources, yield, null, default(CancellationToken));
         }
     }
 }

@@ -12,14 +12,14 @@ using SkinService.Utils;
 
 namespace SkinService
 {
-    [BepInPlugin("com.kmyuhkyuk.SkinService", "kmyuhkyuk-SkinService", "1.1.2")]
+    [BepInPlugin("com.kmyuhkyuk.SkinService", "kmyuhkyuk-SkinService", "1.1.3")]
     public class SkinServicePlugin : BaseUnityPlugin
     {
-        public static ISession Session;
+        internal static ISession Session;
 
-        public static MainApplication MainApplication;
+        internal static MainApplication MainApplication;
 
-        public static AllSkinInfo allskininfo = new AllSkinInfo();
+        internal static AllSkinInfo allskininfo = new AllSkinInfo();
 
         private object[] Templates;
 
@@ -31,7 +31,7 @@ namespace SkinService
 
         private SettingsData settingsdata = new SettingsData();
 
-        public static Action<object> LoadSkinItem;
+        internal static Action<object> LoadSkinItem;
 
         private void Start()
         {
@@ -330,7 +330,7 @@ namespace SkinService
             }
         }
 
-        public class SkinClass <T, V>
+        public class SkinClass<T, V>
         {
             public T Action;
             public V Skinids;
