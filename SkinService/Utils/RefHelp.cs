@@ -299,7 +299,6 @@ namespace SkinService.Utils
                 {
                     return default(F);
                 }
-
             }
 
             public void SetValue(T instance, F value)
