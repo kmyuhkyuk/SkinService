@@ -86,7 +86,7 @@
     <Compile Include="Patches\GameWorldPatch.cs" />
     <Compile Include="Patches\PlayerPatch.cs" />
     <Compile Include="Utils\RaidSkinReplace.cs" />
-    <Compile Include="Utils\Localized.cs" />
+    <Compile Include="Utils\LocalizedHelp.cs" />
     <Compile Include="Patches\SkinItemPatch.cs" />
     <Compile Include="SkinServicePlugin.cs" />
     <Compile Include="Patches\MainApplicationPatch.cs" />
