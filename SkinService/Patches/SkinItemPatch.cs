@@ -1,7 +1,6 @@
 ﻿using Aki.Reflection.Patching;
-using Aki.Reflection.Utils;
-using System.Linq;
 using System.Reflection;
+using SkinService.Utils;
 
 namespace SkinService.Patches
 {
@@ -11,9 +10,7 @@ namespace SkinService.Patches
         {
             BindingFlags flags = BindingFlags.Public | BindingFlags.Instance;
 
-            return PatchConstants.EftTypes.Single(x =>
-            x.GetMethod("GetAnyCustomizationItem", flags) != null)
-            .GetMethod("SetAvailableSuites", flags);
+            return RefHelp.GetEftType(x => x.GetMethod("GetAnyCustomizationItem", flags) != null).GetMethod("SetAvailableSuites", flags);
         }
 
         [PatchPostfix]

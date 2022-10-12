@@ -42,7 +42,7 @@ namespace SkinService
             new SkinItemPatch().Enable();
             new PlayerPatch().Enable();
 
-            Localized.Init();
+            LocalizedHelp.Init();
             RaidSkinReplace.Init();
 
             LoadSkinItem = GetItem;
@@ -350,7 +350,7 @@ namespace SkinService
 
             foreach (string key in NameKeys)
             {
-                string Localization = Localized.localized(key, null);
+                string Localization = LocalizedHelp.localized(key, null);
 
                 //If this key no has localization else return it name
                 if (Localization != key)
