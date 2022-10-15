@@ -19,7 +19,7 @@ namespace SkinService
 
         internal static MainApplication MainApplication;
 
-        internal static AllSkinInfo allskininfo = new AllSkinInfo();
+        internal static readonly AllSkinInfo allskininfo = new AllSkinInfo();
 
         private object[] Templates;
 
@@ -27,9 +27,9 @@ namespace SkinService
 
         private string oldVoice;
 
-        private SkinItemInfo skinitem = new SkinItemInfo();
+        private readonly SkinItemInfo skinitem = new SkinItemInfo();
 
-        private SettingsData settingsdata = new SettingsData();
+        private readonly SettingsData settingsdata = new SettingsData();
 
         internal static Action<object> LoadSkinItem;
 

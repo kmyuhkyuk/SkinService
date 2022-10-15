@@ -11,7 +11,7 @@ namespace SkinService.Utils
     {
         public static DelegateType ObjectMethodDelegate<DelegateType>(MethodInfo method, bool virtualCall = true) where DelegateType : Delegate
         {
-            if (method is null)
+            if (method == null)
             {
                 throw new ArgumentNullException(nameof(method));
             }
