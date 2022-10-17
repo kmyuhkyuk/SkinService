@@ -204,7 +204,7 @@ namespace SkinService.Utils
                 }
                 else
                 {
-                    return default(F);
+                    return default;
                 }
             }
 
@@ -297,7 +297,7 @@ namespace SkinService.Utils
                 }
                 else
                 {
-                    return default(F);
+                    return default;
                 }
             }
 
