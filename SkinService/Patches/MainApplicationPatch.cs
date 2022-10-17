@@ -15,36 +15,34 @@ namespace SkinService.Patches
         }
 
         [PatchPostfix]
-        private static void PatchPostfix(MainApplication __instance)
+        private static void PatchPostfix(MainApplication __instance, IBackendInterface ____backEnd)
         {
-            IBackendInterface __backEnd = Traverse.Create(__instance).Field("_backEnd").GetValue<IBackendInterface>();
+            var pmcProfile = ____backEnd.Session.Profile;
 
-            var Pmcprofile = __backEnd.Session.Profile;
-
-            var Scavprofile = __backEnd.Session.ProfileOfPet;
+            var scavProfile = ____backEnd.Session.ProfileOfPet;
 
             SkinServicePlugin.MainApplication = __instance;
 
-            SkinServicePlugin.Session = __backEnd.Session;
+            SkinServicePlugin.Session = ____backEnd.Session;
 
-            SkinServicePlugin.AllSkinInfo.SkinInfo info = SkinServicePlugin.allskininfo.Who[0];
+            SkinServicePlugin.AllSkinInfo.SkinInfo info = SkinServicePlugin.AllSkinInfos.Who[0];
 
             info.Profile = new Profile[]
             {
-                Scavprofile,
-                Pmcprofile
+                scavProfile,
+                pmcProfile
             };
 
             info.Customization = new Dictionary<EBodyModelPart, string>[]
             {
-                Traverse.Create(Scavprofile).Field("Customization").GetValue<Dictionary<EBodyModelPart, string>>(),
-                Traverse.Create(Pmcprofile).Field("Customization").GetValue<Dictionary<EBodyModelPart, string>>()
+                Traverse.Create(scavProfile).Field("Customization").GetValue<Dictionary<EBodyModelPart, string>>(),
+                Traverse.Create(pmcProfile).Field("Customization").GetValue<Dictionary<EBodyModelPart, string>>()
             };
 
             info.InfoClass = new InfoClass[]
             {
-                Scavprofile.Info,
-                Pmcprofile.Info
+                scavProfile.Info,
+                pmcProfile.Info
             };
         }
     }

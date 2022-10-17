@@ -22,8 +22,8 @@ namespace SkinService.Patches
 
             if (__instance.IsYourPlayer)
             {
-                SkinServicePlugin.allskininfo.Who[0].Player = __instance;
-                SkinServicePlugin.allskininfo.Who[0].PlayerBody = __instance.PlayerBody;
+                SkinServicePlugin.AllSkinInfos.Who[0].Player = __instance;
+                SkinServicePlugin.AllSkinInfos.Who[0].PlayerBody = __instance.PlayerBody;
             }
             else
             {
@@ -50,8 +50,8 @@ namespace SkinService.Patches
                     Traverse.Create(profile).Field("Customization").GetValue<Dictionary<EBodyModelPart, string>>()
                 };
 
-                SkinServicePlugin.allskininfo.Who.Add(info);
-                SkinServicePlugin.allskininfo.Name.Add(string.Concat("Bot", SkinServicePlugin.allskininfo.Who.Count - 2));
+                SkinServicePlugin.AllSkinInfos.Who.Add(info);
+                SkinServicePlugin.AllSkinInfos.Name.Add(string.Concat("Bot", SkinServicePlugin.AllSkinInfos.Who.Count - 2));
             }
         }
     }

@@ -20,27 +20,27 @@ namespace SkinService.Utils
 
             var declaringType = method.DeclaringType;
 
-            var DelegateMethod = delegateType.GetMethod("Invoke");
-            var DelegateParameters = DelegateMethod.GetParameters();
-            var DelegateparameterTypes = DelegateParameters.Select(x => x.ParameterType).ToArray();
+            var delegateMethod = delegateType.GetMethod("Invoke");
+            var delegateParameters = delegateMethod.GetParameters();
+            var delegateParameterTypes = delegateParameters.Select(x => x.ParameterType).ToArray();
 
-            Type ReturnType;
-            bool NeedBox;
+            Type returnType;
+            bool needBox;
 
-            if (DelegateMethod.ReturnType == typeof(object) && method.ReturnType.IsValueType)
+            if (delegateMethod.ReturnType == typeof(object) && method.ReturnType.IsValueType)
             {
-                ReturnType = typeof(object);
+                returnType = typeof(object);
 
-                NeedBox = true;
+                needBox = true;
             }
             else
             {
-                ReturnType = method.ReturnType;
+                returnType = method.ReturnType;
 
-                NeedBox = false;
+                needBox = false;
             }
 
-            var dmd = new DynamicMethod("OpenInstanceDelegate_" + method.Name, ReturnType, DelegateparameterTypes);
+            var dmd = new DynamicMethod("OpenInstanceDelegate_" + method.Name, returnType, delegateParameterTypes);
 
             var ilGen = dmd.GetILGenerator();
 
@@ -90,7 +90,7 @@ namespace SkinService.Utils
                     ilGen.Emit(OpCodes.Castclass, parameterTypes[i]);
                 }
                 //DelegateparameterTypes i == parameterTypes i
-                else if (DelegateparameterTypes[i] == typeof(object) && isvaluetype)
+                else if (delegateParameterTypes[i] == typeof(object) && isvaluetype)
                 {
                     ilGen.Emit(OpCodes.Unbox_Any, parameterTypes[i]);
                 }
@@ -105,7 +105,7 @@ namespace SkinService.Utils
                 ilGen.Emit(OpCodes.Callvirt, method);
             }
 
-            if (NeedBox)
+            if (needBox)
             {
                 ilGen.Emit(OpCodes.Box, method.ReturnType);
             }

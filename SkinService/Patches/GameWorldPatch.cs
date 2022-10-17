@@ -14,7 +14,7 @@ namespace SkinService.Patches
         [PatchPostfix]
         private static void PatchPostfix()
         {
-            SkinServicePlugin.allskininfo.Clear();
+            SkinServicePlugin.AllSkinInfos.Clear();
         }
     }
 }
