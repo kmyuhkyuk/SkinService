@@ -89,7 +89,7 @@ namespace SkinService
 
                 int who = IsWho();
 
-                int allwho = AllSkinInfos.Who.Count;
+                int allWho = AllSkinInfos.Who.Count;
 
                 if (who == 0)
                 {
@@ -98,9 +98,9 @@ namespace SkinService
                 }
                 else if (who == 1)
                 {
-                    if (allwho > 2)
+                    if (allWho > 2)
                     {
-                        for (int i = 2; i < allwho; i++)
+                        for (int i = 2; i < allWho; i++)
                         {
                             Save(AllSkinInfos.Who[i].Player, AllSkinInfos.Who[i].PlayerBody, AllSkinInfos.Who[i].Customization[0], AllSkinInfos.Who[i].InfoClass[0], AllSkinInfos.Who[i].Profile[0], false);
                         }
