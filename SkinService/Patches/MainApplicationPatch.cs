@@ -17,9 +17,9 @@ namespace SkinService.Patches
         [PatchPostfix]
         private static void PatchPostfix(MainApplication __instance, IBackendInterface ____backEnd)
         {
-            var pmcProfile = ____backEnd.Session.Profile;
+            Profile pmcProfile = ____backEnd.Session.Profile;
 
-            var scavProfile = ____backEnd.Session.ProfileOfPet;
+            Profile scavProfile = ____backEnd.Session.ProfileOfPet;
 
             SkinServicePlugin.MainApplication = __instance;
 
