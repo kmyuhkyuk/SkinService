@@ -1,6 +1,8 @@
 ﻿using Aki.Reflection.Patching;
 using System.Reflection;
 using SkinService.Utils;
+using HarmonyLib;
+using System.Collections.Generic;
 
 namespace SkinService.Patches
 {
@@ -16,7 +18,7 @@ namespace SkinService.Patches
         [PatchPostfix]
         private static void PatchPostfix(object __instance)
         {
-            SkinServicePlugin.LoadSkinItem(__instance);
+            SkinServicePlugin.LoadSkinItem(Traverse.Create(__instance).Property("Templates").GetValue<object[]>(), Traverse.Create(__instance).Property("Voices").GetValue<IEnumerable<object>>());
         }
     }
 }

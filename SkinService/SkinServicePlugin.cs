@@ -9,6 +9,7 @@ using Comfort.Common;
 using EFT;
 using SkinService.Patches;
 using SkinService.Utils;
+using static SkinService.SkinServicePlugin;
 
 namespace SkinService
 {
@@ -21,8 +22,6 @@ namespace SkinService
 
         internal static readonly AllSkinInfo AllSkinInfos = new AllSkinInfo();
 
-        private object[] Templates;
-
         private Dictionary<EBodyModelPart, string> OldCustomization;
 
         private string OldVoice;
@@ -31,7 +30,9 @@ namespace SkinService
 
         private readonly SettingsData SettingsDatas = new SettingsData();
 
-        internal static Action<object> LoadSkinItem;
+        private readonly ReflectionData ReflectionDatas = new ReflectionData();
+
+        internal static Action<object[], IEnumerable<object>> LoadSkinItem;
 
         private void Start()
         {
@@ -41,6 +42,8 @@ namespace SkinService
             new GameWorldPatch().Enable();
             new SkinItemPatch().Enable();
             new PlayerPatch().Enable();
+
+            ReflectionDatas.RefIsPmc = RefHelp.FieldRef<MainApplication, RaidSettings>.Create("_raidSettings");
 
             LocalizedHelp.Init();
             RaidSkinReplace.Init();
@@ -195,16 +198,14 @@ namespace SkinService
             }
         }
 
-        void GetItem(object skinobject)
+        void GetItem(object[] templates, IEnumerable<object> voices)
         {
-            Templates = Traverse.Create(skinobject).Property("Templates").GetValue<object[]>();
+            GetSkin(EBodyModelPart.Body, templates, SkinItems.Body);
+            GetSkin(EBodyModelPart.Feet, templates, SkinItems.Feet);
+            GetSkin(EBodyModelPart.Head, templates, SkinItems.Head);
+            GetSkin(EBodyModelPart.Hands, templates, SkinItems.Hands);
 
-            GetSkin(EBodyModelPart.Body, Templates, SkinItems.Body);
-            GetSkin(EBodyModelPart.Feet, Templates, SkinItems.Feet);
-            GetSkin(EBodyModelPart.Head, Templates, SkinItems.Head);
-            GetSkin(EBodyModelPart.Hands, Templates, SkinItems.Hands);
-
-            GetVoice(skinobject, SkinItems.Voice);
+            GetVoice(voices, SkinItems.Voice);
 
             LoadSkinConfig();
         }
@@ -216,10 +217,8 @@ namespace SkinService
             iteminfo.Localization = ItemLocalized(iteminfo.Item);
         }
 
-        void GetVoice(object voiceobject, SkinItemInfo.ItemInfo iteminfo)
+        void GetVoice(IEnumerable<object> voices, SkinItemInfo.ItemInfo iteminfo)
         {
-            IEnumerable<object> voices = Traverse.Create(voiceobject).Property("Voices").GetValue<IEnumerable<object>>();
-
             iteminfo.Item = voices.ToArray();
             iteminfo.Id = SkinItems.Voice.Item.Select(x => Traverse.Create(x).Field("Name").GetValue<string>()).ToArray();
             iteminfo.Localization = ItemLocalized(SkinItems.Voice.Item);
@@ -273,7 +272,7 @@ namespace SkinService
 
         int IsPmc()
         {
-            return Convert.ToInt32(Traverse.Create(MainApplication).Field("_raidSettings").GetValue<RaidSettings>().IsPmc);
+            return Convert.ToInt32(ReflectionDatas.RefIsPmc.GetValue(MainApplication).IsPmc);
         }
 
         public class AllSkinInfo
@@ -348,19 +347,19 @@ namespace SkinService
 
             string[] nameKeys = item.Select(x => Traverse.Create(x).Property("NameLocalizationKey").GetValue<string>()).ToArray();
 
-            foreach (string key in nameKeys)
+            for (int i = 0; i < nameKeys.Count(); i++)
             {
-                string Localization = LocalizedHelp.localized(key, null);
+                string Localization = LocalizedHelp.localized(nameKeys[i], null);
 
                 //If this key no has localization else return it name
-                if (Localization != key)
+                if (Localization != nameKeys[i])
                 {
                     idNames.Add(Localization);
                 }
                 else
                 {
-                    idNames.Add(Traverse.Create(item[GetIndex(key, nameKeys)]).Field("Name").GetValue<string>());
-                }    
+                    idNames.Add(Traverse.Create(item[i]).Field("Name").GetValue<string>());
+                }
             }
 
             return idNames.ToArray();
@@ -374,6 +373,11 @@ namespace SkinService
             public ConfigEntry<string> KeyFeet;
             public ConfigEntry<string> KeyHands;
             public ConfigEntry<string> KeyVoice;
+        }
+
+        public class ReflectionData
+        {
+            public RefHelp.FieldRef<MainApplication, RaidSettings> RefIsPmc;
         }
     }
 }
