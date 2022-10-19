@@ -9,7 +9,6 @@ using Comfort.Common;
 using EFT;
 using SkinService.Patches;
 using SkinService.Utils;
-using static SkinService.SkinServicePlugin;
 
 namespace SkinService
 {
@@ -96,7 +95,9 @@ namespace SkinService
 
                 if (who == 0)
                 {
-                    Save(AllSkinInfos.Who[0].Player, AllSkinInfos.Who[0].PlayerBody, AllSkinInfos.Who[0].Customization[num], AllSkinInfos.Who[0].InfoClass[num], AllSkinInfos.Who[0].Profile[num], Convert.ToBoolean(num));
+                    var nowWho = AllSkinInfos.Who[0];
+
+                    Save(nowWho.Player, nowWho.PlayerBody, nowWho.Customization[num], nowWho.InfoClass[num], nowWho.Profile[num], Convert.ToBoolean(num));
 
                 }
                 else if (who == 1)
@@ -105,13 +106,17 @@ namespace SkinService
                     {
                         for (int i = 2; i < allWho; i++)
                         {
-                            Save(AllSkinInfos.Who[i].Player, AllSkinInfos.Who[i].PlayerBody, AllSkinInfos.Who[i].Customization[0], AllSkinInfos.Who[i].InfoClass[0], AllSkinInfos.Who[i].Profile[0], false);
+                            var nowWho = AllSkinInfos.Who[i];
+
+                            Save(nowWho.Player, nowWho.PlayerBody, nowWho.Customization[0], nowWho.InfoClass[0], nowWho.Profile[0], false);
                         }
                     }
                 }
                 else
                 {
-                    Save(AllSkinInfos.Who[who].Player, AllSkinInfos.Who[who].PlayerBody, AllSkinInfos.Who[who].Customization[0], AllSkinInfos.Who[who].InfoClass[0], AllSkinInfos.Who[who].Profile[0], false);
+                    var nowWho = AllSkinInfos.Who[who];
+
+                    Save(nowWho.Player, nowWho.PlayerBody, nowWho.Customization[0], nowWho.InfoClass[0], nowWho.Profile[0], false);
                 }
             }
         }
@@ -349,10 +354,12 @@ namespace SkinService
 
             for (int i = 0; i < nameKeys.Count(); i++)
             {
-                string Localization = LocalizedHelp.localized(nameKeys[i], null);
+                string nameKey = nameKeys[i];
+
+                string Localization = LocalizedHelp.localized(nameKey, null);
 
                 //If this key no has localization else return it name
-                if (Localization != nameKeys[i])
+                if (Localization != nameKey)
                 {
                     idNames.Add(Localization);
                 }

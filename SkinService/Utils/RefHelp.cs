@@ -83,16 +83,18 @@ namespace SkinService.Utils
             {
                 ilGen.Emit(OpCodes.Ldarg, i);
 
-                bool isvaluetype = parameterTypes[i].IsValueType;
+                Type parameterType = parameterTypes[i];
+
+                bool isvaluetype = parameterType.IsValueType;
 
                 if (!isvaluetype)
                 {
-                    ilGen.Emit(OpCodes.Castclass, parameterTypes[i]);
+                    ilGen.Emit(OpCodes.Castclass, parameterType);
                 }
                 //DelegateparameterTypes i == parameterTypes i
                 else if (delegateParameterTypes[i] == typeof(object) && isvaluetype)
                 {
-                    ilGen.Emit(OpCodes.Unbox_Any, parameterTypes[i]);
+                    ilGen.Emit(OpCodes.Unbox_Any, parameterType);
                 }
             }
 
