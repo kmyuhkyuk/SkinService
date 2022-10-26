@@ -32,7 +32,7 @@ namespace SkinService.Utils
 
             RefPoolManager = RefHelp.ObjectMethodDelegate<Func<PoolManager, PoolManager.PoolsCategory, PoolManager.AssemblyType, ResourceKey[], object, object, CancellationToken, Task>>(typeof(PoolManager).GetMethod("LoadBundlesAndCreatePools", flags));
 
-            RefSpeaker = RefHelp.FieldRef<Player, object>.Create("Speaker");
+            RefSpeaker = RefHelp.FieldRef<Player, object>.Create(new string[] { "Speaker" });
 
             RefReplaceVoice = RefHelp.ObjectMethodDelegate<Action<object, EPlayerSide, int, string, bool>>(RefHelp.GetEftType(x => x.GetMethod("ReplaceVoice", flags) != null).GetMethod("Init", flags));
 

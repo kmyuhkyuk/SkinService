@@ -139,12 +139,24 @@ namespace SkinService.Utils
 
             public PropertyRef(PropertyInfo propertyinfo, object instance = null)
             {
+                if (propertyinfo == null)
+                {
+                    throw new Exception("PropertyInfo is null");
+                }
+
                 Init(propertyinfo, instance);
             }
 
-            public PropertyRef(Type type, string propertyname, object instance = null)
+            public PropertyRef(Type type, string[] propertynames, object instance = null)
             {
-                Init(type.GetProperty(propertyname, AccessTools.all), instance);
+                PropertyInfo propertyInfo = propertynames.Select(x => type.GetProperty(x, AccessTools.all)).FirstOrDefault(x => x != null);
+
+                if (propertyInfo == null)
+                {
+                    throw new Exception(propertynames.First() + " is null");
+                }
+
+                Init(propertyInfo, instance);
             }
 
             private void Init(PropertyInfo propertyinfo, object instance)
@@ -179,14 +191,14 @@ namespace SkinService.Utils
                 return new PropertyRef<T, F>(propertyinfo, instance);
             }
 
-            public static PropertyRef<T, F> Create(string propertyname, object instance = null)
+            public static PropertyRef<T, F> Create(string[] propertynames, object instance = null)
             {
-                return new PropertyRef<T, F>(typeof(T), propertyname, instance);
+                return new PropertyRef<T, F>(typeof(T), propertynames, instance);
             }
 
-            public static PropertyRef<T, F> Create(Type type, string propertyname, object instance = null)
+            public static PropertyRef<T, F> Create(Type type, string[] propertynames, object instance = null)
             {
-                return new PropertyRef<T, F>(type, propertyname, instance);
+                return new PropertyRef<T, F>(type, propertynames, instance);
             }
 
             public F GetValue(T instance)
@@ -244,12 +256,24 @@ namespace SkinService.Utils
 
             public FieldRef(FieldInfo fieldinfo, object instance = null)
             {
+                if (fieldinfo == null)
+                {
+                    throw new Exception("FieldInfo is null");
+                }
+
                 Init(fieldinfo, instance);
             }
 
-            public FieldRef(Type type, string fieldname, object instance = null)
+            public FieldRef(Type type, string[] fieldnames, object instance = null)
             {
-                Init(type.GetField(fieldname, AccessTools.all), instance);
+                FieldInfo fieldInfo = fieldnames.Select(x => type.GetField(x, AccessTools.all)).FirstOrDefault(x => x != null);
+
+                if (fieldInfo == null)
+                {
+                    throw new Exception(fieldnames.First() + " is null");
+                }
+
+                Init(fieldInfo, instance);
             }
 
             public static FieldRef<T, F> Create(FieldInfo fieldinfo, object instance = null)
@@ -257,14 +281,14 @@ namespace SkinService.Utils
                 return new FieldRef<T, F>(fieldinfo, instance);
             }
 
-            public static FieldRef<T, F> Create(string fieldname, object instance = null)
+            public static FieldRef<T, F> Create(string[] fieldnames, object instance = null)
             {
-                return new FieldRef<T, F>(typeof(T), fieldname, instance);
+                return new FieldRef<T, F>(typeof(T), fieldnames, instance);
             }
 
-            public static FieldRef<T, F> Create(Type type, string fieldname, object instance = null)
+            public static FieldRef<T, F> Create(Type type, string[] fieldnames, object instance = null)
             {
-                return new FieldRef<T, F>(type, fieldname, instance);
+                return new FieldRef<T, F>(type, fieldnames, instance);
             }
 
             private void Init(FieldInfo fieldinfo, object instance = null)
@@ -336,4 +360,5 @@ namespace SkinService.Utils
             return GetEftMethod(GetEftType(func), flags, func2);
         }
     }
+
 }
