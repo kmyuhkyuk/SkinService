@@ -147,6 +147,18 @@ namespace SkinService.Utils
                 Init(propertyinfo, instance);
             }
 
+            public PropertyRef(Type type, string propertyname, object instance = null)
+            {
+                PropertyInfo propertyInfo = type.GetProperty(propertyname, AccessTools.all);
+
+                if (propertyInfo == null)
+                {
+                    throw new Exception(propertyname + " is null");
+                }
+
+                Init(propertyInfo, instance);
+            }
+
             public PropertyRef(Type type, string[] propertynames, object instance = null)
             {
                 PropertyInfo propertyInfo = propertynames.Select(x => type.GetProperty(x, AccessTools.all)).FirstOrDefault(x => x != null);
@@ -191,9 +203,19 @@ namespace SkinService.Utils
                 return new PropertyRef<T, F>(propertyinfo, instance);
             }
 
+            public static PropertyRef<T, F> Create(string propertyname, object instance = null)
+            {
+                return new PropertyRef<T, F>(typeof(T), propertyname, instance);
+            }
+
             public static PropertyRef<T, F> Create(string[] propertynames, object instance = null)
             {
                 return new PropertyRef<T, F>(typeof(T), propertynames, instance);
+            }
+
+            public static PropertyRef<T, F> Create(Type type, string propertyname, object instance = null)
+            {
+                return new PropertyRef<T, F>(type, propertyname, instance);
             }
 
             public static PropertyRef<T, F> Create(Type type, string[] propertynames, object instance = null)
@@ -264,6 +286,18 @@ namespace SkinService.Utils
                 Init(fieldinfo, instance);
             }
 
+            public FieldRef(Type type, string fieldname, object instance = null)
+            {
+                FieldInfo fieldInfo = type.GetField(fieldname, AccessTools.all);
+
+                if (fieldInfo == null)
+                {
+                    throw new Exception(fieldInfo + " is null");
+                }
+
+                Init(fieldInfo, instance);
+            }
+
             public FieldRef(Type type, string[] fieldnames, object instance = null)
             {
                 FieldInfo fieldInfo = fieldnames.Select(x => type.GetField(x, AccessTools.all)).FirstOrDefault(x => x != null);
@@ -281,9 +315,19 @@ namespace SkinService.Utils
                 return new FieldRef<T, F>(fieldinfo, instance);
             }
 
+            public static FieldRef<T, F> Create(string fieldname, object instance = null)
+            {
+                return new FieldRef<T, F>(typeof(T), fieldname, instance);
+            }
+
             public static FieldRef<T, F> Create(string[] fieldnames, object instance = null)
             {
                 return new FieldRef<T, F>(typeof(T), fieldnames, instance);
+            }
+
+            public static FieldRef<T, F> Create(Type type, string fieldname, object instance = null)
+            {
+                return new FieldRef<T, F>(type, fieldname, instance);
             }
 
             public static FieldRef<T, F> Create(Type type, string[] fieldnames, object instance = null)
@@ -360,5 +404,6 @@ namespace SkinService.Utils
             return GetEftMethod(GetEftType(func), flags, func2);
         }
     }
+
 
 }
