@@ -133,9 +133,21 @@ namespace SkinService.Utils
 
             private T Instance;
 
-            public Type InType;
+            public Type InType
+            {
+                get
+                {
+                    return TType;
+                }
+            }
 
-            public Type PropertyType;
+            public Type PropertyType
+            {
+                get
+                {
+                    return PropertyInfo.PropertyType;
+                }
+            }
 
             public PropertyRef(PropertyInfo propertyinfo, object instance = null)
             {
@@ -176,10 +188,6 @@ namespace SkinService.Utils
                 PropertyInfo = propertyinfo;
 
                 TType = PropertyInfo.DeclaringType;
-
-                InType = TType;
-
-                PropertyType = PropertyInfo.PropertyType;
 
                 Instance = (T)instance;
 
@@ -272,9 +280,21 @@ namespace SkinService.Utils
 
             private T Instance;
 
-            public Type InType;
+            public Type InType
+            {
+                get
+                {
+                    return TType;
+                }
+            }
 
-            public Type FieldType;
+            public Type FieldType
+            {
+                get
+                {
+                    return FieldInfo.FieldType;
+                }
+            }
 
             public FieldRef(FieldInfo fieldinfo, object instance = null)
             {
@@ -341,10 +361,6 @@ namespace SkinService.Utils
 
                 TType = FieldInfo.DeclaringType;
 
-                InType = TType;
-
-                FieldType = FieldInfo.FieldType;
-
                 Instance = (T)instance;
 
                 HarmonyFieldRef = AccessTools.FieldRefAccess<T, F>(FieldInfo);
@@ -404,6 +420,4 @@ namespace SkinService.Utils
             return GetEftMethod(GetEftType(func), flags, func2);
         }
     }
-
-
 }
