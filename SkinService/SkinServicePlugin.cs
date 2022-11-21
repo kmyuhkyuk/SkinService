@@ -52,7 +52,7 @@ namespace SkinService
 
         void LoadSkinConfig()
         {
-            string mainSettings = "Skin Service Settings";
+            const string mainSettings = "Skin Service Settings";
 
             SettingsDatas.KeyWho = Config.Bind<string>(mainSettings, "Who", AllSkinInfos.Name[0], new ConfigDescription("", new AcceptableValueList<string>(AllSkinInfos.Name.ToArray()), new ConfigurationManagerAttributes { Order = 9, HideDefaultButton = true }));
 
