@@ -236,38 +236,30 @@ namespace SkinService
 
         int GetNowPartIndex(EBodyModelPart part, string[] ids)
         {
-            string now;
-
             int who = IsWho();
 
-            if (who > 1)
+            int isPmc = 0;
+
+            if (who <= 1)
             {
-                AllSkinInfos.Who[who].Customization[0].TryGetValue(part, out now);
-            }
-            else
-            {
-                AllSkinInfos.Who[0].Customization[IsPmc()].TryGetValue(part, out now);
+                isPmc = IsPmc();
             }
 
-            return GetIndex(now, ids);
+            return GetIndex(AllSkinInfos.Who[who].Customization[isPmc][part], ids);
         }
 
         int GetNowVoiceIndex(string[] ids)
         {
-            string now;
-
             int who = IsWho();
 
-            if (who > 1)
+            int isPmc = 0;
+
+            if (who <= 1)
             {
-                now = AllSkinInfos.Who[who].InfoClass[0].Voice;
-            }
-            else
-            {
-                now = AllSkinInfos.Who[0].InfoClass[IsPmc()].Voice;
+                isPmc = IsPmc();
             }
 
-            return GetIndex(now, ids);
+            return GetIndex(AllSkinInfos.Who[who].InfoClass[isPmc].Voice, ids);
         }
 
         int IsWho()
