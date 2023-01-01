@@ -57,7 +57,7 @@ namespace SkinService.Utils
 
         private static async Task LoadBundlesAndCreatePools(Profile profile, object yield)
         {
-            ResourceKey[] resources = profile.GetAllPrefabPaths(true).ToArray<ResourceKey>();
+            ResourceKey[] resources = profile.GetAllPrefabPaths(true).ToArray();
 
             await RefPoolManager(Singleton<PoolManager>.Instance, PoolManager.PoolsCategory.Raid, PoolManager.AssemblyType.Local, resources, yield, null, default(CancellationToken));
         }

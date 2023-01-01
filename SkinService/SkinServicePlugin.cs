@@ -9,15 +9,14 @@ using Comfort.Common;
 using EFT;
 using SkinService.Patches;
 using SkinService.Utils;
+using SkinService.Utils.Session;
 
 namespace SkinService
 {
-    [BepInPlugin("com.kmyuhkyuk.SkinService", "kmyuhkyuk-SkinService", "1.1.3")]
+    [BepInPlugin("com.kmyuhkyuk.SkinService", "kmyuhkyuk-SkinService", "1.1.4")]
     public class SkinServicePlugin : BaseUnityPlugin
     {
-        internal static ISession Session;
-
-        internal static MainApplication MainApplication;
+        internal static RaidSettings Raid;
 
         internal static readonly AllSkinInfo AllSkinInfos = new AllSkinInfo();
 
@@ -29,8 +28,6 @@ namespace SkinService
 
         private readonly SettingsData SettingsDatas = new SettingsData();
 
-        private readonly ReflectionData ReflectionDatas = new ReflectionData();
-
         internal static Action<object[], IEnumerable<object>> LoadSkinItem;
 
         private void Start()
@@ -41,8 +38,6 @@ namespace SkinService
             new GameWorldPatch().Enable();
             new SkinItemPatch().Enable();
             new PlayerPatch().Enable();
-
-            ReflectionDatas.RefIsPmc = RefHelp.FieldRef<MainApplication, RaidSettings>.Create("_raidSettings");
 
             LocalizedHelp.Init();
             RaidSkinReplace.Init();
@@ -151,7 +146,7 @@ namespace SkinService
                 ApplySkinChange(array.ToArray(), new Callback(SkinBack));
 
                 //Trigger ChangeVoice event
-                Session.ChangeVoice(infoclass.Voice, new Callback(VoiceBack));
+                ISessionHelp.ChangeVoice(infoclass.Voice, new Callback(VoiceBack));
             }
 
             if (body != null)
@@ -181,7 +176,7 @@ namespace SkinService
 
         void ApplySkinChange(string[] ids, Callback onFinished)
         {
-            Session.SendOperationRightNow(new SkinClass<string, string[]>("ChangeCustomization", ids), onFinished);
+            ISessionHelp.SendOperationRightNow(new SkinClass<string, string[]>("ChangeCustomization", ids), onFinished);
         }
 
         void SkinBack(IResult response)
@@ -238,9 +233,13 @@ namespace SkinService
         {
             int who = IsWho();
 
-            int isPmc = 0;
+            int isPmc;
 
-            if (who <= 1)
+            if (who > 0)
+            {
+                isPmc = 0;
+            }
+            else
             {
                 isPmc = IsPmc();
             }
@@ -252,9 +251,13 @@ namespace SkinService
         {
             int who = IsWho();
 
-            int isPmc = 0;
+            int isPmc;
 
-            if (who <= 1)
+            if (who > 0)
+            {
+                isPmc = 0;
+            }
+            else
             {
                 isPmc = IsPmc();
             }
@@ -269,7 +272,7 @@ namespace SkinService
 
         int IsPmc()
         {
-            return Convert.ToInt32(ReflectionDatas.RefIsPmc.GetValue(MainApplication).IsPmc);
+            return Convert.ToInt32(Raid.IsPmc);
         }
 
         public class AllSkinInfo
@@ -372,11 +375,6 @@ namespace SkinService
             public ConfigEntry<string> KeyFeet;
             public ConfigEntry<string> KeyHands;
             public ConfigEntry<string> KeyVoice;
-        }
-
-        public class ReflectionData
-        {
-            public RefHelp.FieldRef<MainApplication, RaidSettings> RefIsPmc;
         }
     }
 }
