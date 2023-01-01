@@ -13,7 +13,7 @@ using SkinService.Utils.Session;
 
 namespace SkinService
 {
-    [BepInPlugin("com.kmyuhkyuk.SkinService", "kmyuhkyuk-SkinService", "1.1.4")]
+    [BepInPlugin("com.kmyuhkyuk.SkinService", "kmyuhkyuk-SkinService", "1.1.3")]
     public class SkinServicePlugin : BaseUnityPlugin
     {
         internal static RaidSettings Raid;
