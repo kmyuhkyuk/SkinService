@@ -354,7 +354,7 @@ namespace SkinService
                 string Localization = LocalizedHelp.localized(nameKey, null);
 
                 //If this key no has localization else return it name
-                if (Localization != nameKey && Localization != "")
+                if (Localization != nameKey && !Localization.IsNullOrEmpty())
                 {
                     idNames.Add(Localization);
                 }
