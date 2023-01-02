@@ -10,6 +10,7 @@ using EFT;
 using SkinService.Patches;
 using SkinService.Utils;
 using SkinService.Utils.Session;
+using static SkinService.SkinServicePlugin;
 
 namespace SkinService
 {
@@ -49,7 +50,11 @@ namespace SkinService
         {
             const string mainSettings = "Skin Service Settings";
 
-            SettingsDatas.KeyWho = Config.Bind<string>(mainSettings, "Who", AllSkinInfos.Name[0], new ConfigDescription("", new AcceptableValueList<string>(AllSkinInfos.Name.ToArray()), new ConfigurationManagerAttributes { Order = 9, HideDefaultButton = true }));
+            string playerName = AllSkinInfos.Name[0];
+
+            SettingsDatas.KeyWho = Config.Bind<string>(mainSettings, "Who", playerName, new ConfigDescription("", new AcceptableValueList<string>(AllSkinInfos.Name.ToArray()), new ConfigurationManagerAttributes { Order = 9, HideDefaultButton = true }));
+
+            SettingsDatas.KeyWho.Value = playerName;
 
             SettingsDatas.KeyBody = Config.Bind<string>(mainSettings, "Body", SkinItems.Body.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(SkinItems.Body.Localization), new ConfigurationManagerAttributes { Order = 8, HideDefaultButton = true }));
             SettingsDatas.KeyFeet = Config.Bind<string>(mainSettings, "Feet", SkinItems.Feet.Localization[0], new ConfigDescription("", new AcceptableValueList<string>(SkinItems.Feet.Localization), new ConfigurationManagerAttributes { Order = 7, HideDefaultButton = true }));
@@ -165,13 +170,16 @@ namespace SkinService
 
         void GetNow()
         {
-            SettingsDatas.KeyBody.Value = SkinItems.Body.Localization[GetNowPartIndex(EBodyModelPart.Body, SkinItems.Body.Id)];
-            SettingsDatas.KeyFeet.Value = SkinItems.Feet.Localization[GetNowPartIndex(EBodyModelPart.Feet, SkinItems.Feet.Id)];
-            SettingsDatas.KeyHead.Value = SkinItems.Head.Localization[GetNowPartIndex(EBodyModelPart.Head, SkinItems.Head.Id)];
-            SettingsDatas.KeyHands.Value = SkinItems.Hands.Localization[GetNowPartIndex(EBodyModelPart.Hands, SkinItems.Hands.Id)];
+            //Prevent the value is allbot cause main menu can't load
+            if (IsWho() != 1)
+            {
+                SettingsDatas.KeyBody.Value = SkinItems.Body.Localization[GetNowPartIndex(EBodyModelPart.Body, SkinItems.Body.Id)];
+                SettingsDatas.KeyFeet.Value = SkinItems.Feet.Localization[GetNowPartIndex(EBodyModelPart.Feet, SkinItems.Feet.Id)];
+                SettingsDatas.KeyHead.Value = SkinItems.Head.Localization[GetNowPartIndex(EBodyModelPart.Head, SkinItems.Head.Id)];
+                SettingsDatas.KeyHands.Value = SkinItems.Hands.Localization[GetNowPartIndex(EBodyModelPart.Hands, SkinItems.Hands.Id)];
 
-            SettingsDatas.KeyVoice.Value = SkinItems.Voice.Localization[GetNowVoiceIndex(SkinItems.Voice.Id)];
-
+                SettingsDatas.KeyVoice.Value = SkinItems.Voice.Localization[GetNowVoiceIndex(SkinItems.Voice.Id)];
+            }
         }
 
         void ApplySkinChange(string[] ids, Callback onFinished)
