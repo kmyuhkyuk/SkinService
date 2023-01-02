@@ -10,7 +10,6 @@ using EFT;
 using SkinService.Patches;
 using SkinService.Utils;
 using SkinService.Utils.Session;
-using static SkinService.SkinServicePlugin;
 
 namespace SkinService
 {
