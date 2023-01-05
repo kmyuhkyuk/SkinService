@@ -12,23 +12,19 @@ namespace SkinService.Patches
 {
     public class MainApplicationPatch : ModulePatch
     {
-        private static readonly bool Is330Up;
+        private static readonly bool Is330Up = SkinServicePlugin.GameVersion > new Version("0.12.12.20243");
 
         private static readonly MethodBase MainApplicationBase;
 
         static MainApplicationPatch()
         {
-            Type mainApp = PatchConstants.EftTypes.SingleOrDefault(x => x.Name == "MainApplication");
-
-            Is330Up = mainApp == null;
-
             if (Is330Up)
             {
                 MainApplicationBase = PatchConstants.EftTypes.Single(x => x.Name == "TarkovApplication").GetMethods(BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Instance).Single(x => x.IsAssembly);
             }
             else
             {
-                MainApplicationBase = mainApp.GetMethods(BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Instance).Single(x => x.IsAssembly);
+                MainApplicationBase = PatchConstants.EftTypes.SingleOrDefault(x => x.Name == "MainApplication").GetMethods(BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Instance).Single(x => x.IsAssembly);
             }
         }
 

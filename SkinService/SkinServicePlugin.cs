@@ -10,6 +10,7 @@ using EFT;
 using SkinService.Patches;
 using SkinService.Utils;
 using SkinService.Utils.Session;
+using System.Diagnostics;
 
 namespace SkinService
 {
@@ -29,6 +30,16 @@ namespace SkinService
         private readonly SettingsData SettingsDatas = new SettingsData();
 
         internal static Action<object[], IEnumerable<object>> LoadSkinItem;
+
+        public static Version GameVersion
+        {
+            get
+            {
+                FileVersionInfo exeInfo = Process.GetCurrentProcess().MainModule.FileVersionInfo;
+
+                return new Version(exeInfo.FileMajorPart, exeInfo.ProductMinorPart, exeInfo.ProductBuildPart, exeInfo.FilePrivatePart);
+            }
+        }
 
         private void Start()
         {
