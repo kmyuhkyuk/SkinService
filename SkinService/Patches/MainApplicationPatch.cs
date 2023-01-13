@@ -1,11 +1,10 @@
 ﻿using Aki.Reflection.Patching;
-using Aki.Reflection.Utils;
 using HarmonyLib;
 using System;
-using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using EFT;
+using SkinService.Utils;
 using SkinService.Utils.Session;
 
 namespace SkinService.Patches
@@ -18,13 +17,15 @@ namespace SkinService.Patches
 
         static MainApplicationPatch()
         {
+            BindingFlags flags = BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Instance;
+
             if (Is330Up)
             {
-                MainApplicationBase = PatchConstants.EftTypes.Single(x => x.Name == "TarkovApplication").GetMethods(BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Instance).Single(x => x.IsAssembly);
+                MainApplicationBase = RefHelp.GetEftMethod(x => x.Name == "TarkovApplication", flags, x => x.IsAssembly);
             }
             else
             {
-                MainApplicationBase = PatchConstants.EftTypes.SingleOrDefault(x => x.Name == "MainApplication").GetMethods(BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Instance).Single(x => x.IsAssembly);
+                MainApplicationBase = RefHelp.GetEftMethod(x => x.Name == "MainApplication", flags, x => x.IsAssembly);
             }
         }
 
