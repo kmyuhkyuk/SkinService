@@ -3,6 +3,7 @@ using BepInEx.Configuration;
 using HarmonyLib;
 using System;
 using System.Linq;
+using System.Diagnostics;
 using System.Collections.Generic;
 using UnityEngine;
 using Comfort.Common;
@@ -10,7 +11,6 @@ using EFT;
 using SkinService.Patches;
 using SkinService.Utils;
 using SkinService.Utils.Session;
-using System.Diagnostics;
 
 namespace SkinService
 {
@@ -31,19 +31,15 @@ namespace SkinService
 
         internal static Action<object[], IEnumerable<object>> LoadSkinItem;
 
-        public static Version GameVersion
-        {
-            get
-            {
-                FileVersionInfo exeInfo = Process.GetCurrentProcess().MainModule.FileVersionInfo;
-
-                return new Version(exeInfo.FileMajorPart, exeInfo.ProductMinorPart, exeInfo.ProductBuildPart, exeInfo.FilePrivatePart);
-            }
-        }
+        public static Version GameVersion { get; private set; }
 
         private void Start()
         {
             Logger.LogInfo("Loaded: kmyuhkyuk-SkinService");
+
+            FileVersionInfo exeInfo = Process.GetCurrentProcess().MainModule.FileVersionInfo;
+
+            GameVersion = new Version(exeInfo.FileMajorPart, exeInfo.ProductMinorPart, exeInfo.ProductBuildPart, exeInfo.FilePrivatePart);
 
             new MainApplicationPatch().Enable();
             new GameWorldPatch().Enable();
