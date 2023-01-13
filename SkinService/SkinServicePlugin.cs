@@ -31,7 +31,7 @@ namespace SkinService
 
         internal static Action<object[], IEnumerable<object>> LoadSkinItem;
 
-        public static Version GameVersion { get; private set; }
+        internal static Version GameVersion { get; private set; }
 
         private void Start()
         {
