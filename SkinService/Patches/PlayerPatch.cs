@@ -51,7 +51,7 @@ namespace SkinService.Patches
                 };
 
                 SkinServicePlugin.AllSkinInfos.Who.Add(info);
-                SkinServicePlugin.AllSkinInfos.Name.Add(string.Concat("Bot", SkinServicePlugin.AllSkinInfos.Who.Count - 2));
+                SkinServicePlugin.AllSkinInfos.Name.Add(string.Concat("Bot", __instance.Id - 1));
             }
         }
     }
