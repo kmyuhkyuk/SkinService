@@ -5,11 +5,20 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using EFT;
+using System;
+using SkinService.Utils;
 
 namespace SkinService.Patches
 {
     public class PlayerPatch : ModulePatch
     {
+        private static readonly ReflectionData ReflectionDatas = new ReflectionData();
+
+        static PlayerPatch()
+        {
+            ReflectionDatas.RefCustomization = RefHelp.FieldRef<Profile, Dictionary<EBodyModelPart, string>>.Create("Customization");
+        }
+
         protected override MethodBase GetTargetMethod()
         {
             return typeof(Player).GetMethod("Init", PatchConstants.PrivateFlags);
@@ -47,12 +56,17 @@ namespace SkinService.Patches
 
                 info.Customization = new Dictionary<EBodyModelPart, string>[]
                 {
-                    Traverse.Create(profile).Field("Customization").GetValue<Dictionary<EBodyModelPart, string>>()
+                    ReflectionDatas.RefCustomization.GetValue(profile)
                 };
 
                 SkinServicePlugin.AllSkinInfos.Who.Add(info);
                 SkinServicePlugin.AllSkinInfos.Name.Add(string.Concat("Bot", __instance.Id - 1));
             }
+        }
+
+        public class ReflectionData
+        {
+            public RefHelp.FieldRef<Profile, Dictionary<EBodyModelPart, string>> RefCustomization;
         }
     }
 }
