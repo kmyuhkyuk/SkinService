@@ -1,5 +1,4 @@
-﻿using HarmonyLib;
-using System;
+﻿using System;
 using System.Reflection;
 using Comfort.Common;
 
@@ -9,21 +8,23 @@ namespace SkinService.Utils.Session
     {
         private static ISession Session;
 
-        private static Action<string, Callback> RefChangeVoice;
+        private static Action<object, string, Callback> RefChangeVoice;
 
-        //Only Init Once
+        static ISessionHelp()
+        {
+            BindingFlags flags = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance;
+
+            RefChangeVoice = RefHelp.ObjectMethodDelegate<Action<object, string, Callback>>(RefHelp.GetEftMethod(x => x.GetMethod("ChangeVoice", flags) != null && !x.IsInterface && !x.GetMethod("ChangeVoice", flags).GetParameters()[1].HasDefaultValue, flags, x => x.Name == "ChangeVoice"));
+        }
+
         public static void Init(ISession session)
         {
             Session = session;
-
-            Type sessionType = Session.GetType();
-
-            RefChangeVoice = AccessTools.MethodDelegate<Action<string, Callback>>(sessionType.GetMethod("ChangeVoice", BindingFlags.Public | BindingFlags.Instance), Session);
         }
 
         public static void ChangeVoice(string voice, Callback callback)
         {
-            RefChangeVoice(voice, callback);
+            RefChangeVoice(Session, voice, callback);
         }
 
         public static void SendOperationRightNow(object operation, Callback callback)
