@@ -6,8 +6,6 @@ namespace SkinService.Utils.Session
 {
     public class ISessionHelp
     {
-        public readonly static Type SessionType;
-
         private static ISession Session;
 
         private static Action<object, string, Callback> RefChangeVoice;
@@ -16,9 +14,7 @@ namespace SkinService.Utils.Session
         {
             BindingFlags flags = BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance;
 
-            SessionType = RefHelp.GetEftType(x => x.GetMethod("ChangeVoice", flags) != null && !x.IsInterface && !x.GetMethod("ChangeVoice", flags).GetParameters()[1].HasDefaultValue);
-
-            RefChangeVoice = RefHelp.ObjectMethodDelegate<Action<object, string, Callback>>(SessionType.GetMethod("ChangeVoice", flags));
+            RefChangeVoice = RefHelp.ObjectMethodDelegate<Action<object, string, Callback>>(RefHelp.GetEftType(x => x.GetMethod("ChangeVoice", flags) != null && !x.IsInterface && !x.GetMethod("ChangeVoice", flags).GetParameters()[1].HasDefaultValue).GetMethod("ChangeVoice", flags));
         }
 
         public static void Init(ISession session)
