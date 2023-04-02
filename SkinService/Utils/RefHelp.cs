@@ -7,7 +7,7 @@ using System.Reflection.Emit;
 
 namespace SkinService.Utils
 {
-    public class RefHelp
+    public static class RefHelp
     {
         public static DelegateType ObjectMethodDelegate<DelegateType>(MethodInfo method, bool virtualCall = true) where DelegateType : Delegate
         {

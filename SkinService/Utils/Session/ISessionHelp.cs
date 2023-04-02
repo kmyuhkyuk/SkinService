@@ -4,7 +4,7 @@ using Comfort.Common;
 
 namespace SkinService.Utils.Session
 {
-    public class ISessionHelp
+    public static class ISessionHelp
     {
         private static ISession Session;
 

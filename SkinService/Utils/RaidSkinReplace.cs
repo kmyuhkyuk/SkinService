@@ -12,7 +12,7 @@ using EFT.InventoryLogic;
 
 namespace SkinService.Utils
 {
-    public class RaidSkinReplace
+    public static class RaidSkinReplace
     {
         private static Func<PlayerBody, object, object, BindableState<Item>, int, EPlayerSide, Task> RefPlayerBody;
 

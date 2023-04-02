@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace SkinService.Utils
 {
-    public class LocalizedHelp
+    public static class LocalizedHelp
     {
         private static Func<string, string, string> RefLocalized;
 
