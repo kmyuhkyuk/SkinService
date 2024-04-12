@@ -1,7 +1,8 @@
-﻿using EFT;
+﻿#if !UNITY_EDITOR
+
+using EFT;
 using EFTApi.Helpers;
 
-#if !UNITY_EDITOR
 
 namespace SkinService.Models
 {
