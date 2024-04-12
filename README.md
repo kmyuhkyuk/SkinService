@@ -1,6 +1,6 @@
 # SkinService
 
-Any time change your current Skin and Voice
+Any time change your and other player Skin and Voice
 
 ## How build the source
 1. Dowload or Clone the branch
