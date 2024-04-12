@@ -11,11 +11,8 @@ namespace SkinService
         {
             var skinServiceModel = SkinServiceModel.Instance;
 
-            var profile = _SessionHelper.Profile;
-            var profileOfPet = _SessionHelper.ProfileOfPet;
-
-            skinServiceModel.PlayerSkin = new PlayerSkinModel(profile);
-            skinServiceModel.ScavPlayerSkin = new PlayerSkinModel(profileOfPet);
+            skinServiceModel.PlayerSkin = new PlayerSkinModel(_SessionHelper.Profile);
+            skinServiceModel.ScavPlayerSkin = new PlayerSkinModel(_SessionHelper.ProfileOfPet);
         }
     }
 }
