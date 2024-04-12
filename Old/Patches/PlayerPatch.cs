@@ -21,7 +21,7 @@ namespace SkinService.Patches
 
         protected override MethodBase GetTargetMethod()
         {
-            return typeof(Player).GetMethod("Init", PatchConstants.PrivateFlags);
+            return typeof(Player).GetMethod("Init", BindingFlags.NonPublic | BindingFlags.Instance);
         }
 
         [PatchPostfix]

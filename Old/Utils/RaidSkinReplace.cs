@@ -59,7 +59,7 @@ namespace SkinService.Utils
         {
             ResourceKey[] resources = profile.GetAllPrefabPaths(true).ToArray();
 
-            await RefPoolManager(Singleton<PoolManager>.Instance, PoolManager.PoolsCategory.Raid, PoolManager.AssemblyType.Local, resources, yield, null, default(CancellationToken));
+            await RefPoolManager(Singleton<PoolManager>.Instance, PoolManager.PoolsCategory.Raid, PoolManager.AssemblyType.Local, resources, yield, null, default);
         }
     }
 }

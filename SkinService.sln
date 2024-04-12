@@ -5,16 +5,27 @@ VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkinService", "SkinService\SkinService.csproj", "{208574D6-8527-48BC-B4EB-A793A400DEDB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Build\Build.csproj", "{4104357F-06FE-442F-A7DA-83D21EFBD991}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		UNITY_EDITOR|Any CPU = UNITY_EDITOR|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{208574D6-8527-48BC-B4EB-A793A400DEDB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{208574D6-8527-48BC-B4EB-A793A400DEDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{208574D6-8527-48BC-B4EB-A793A400DEDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{208574D6-8527-48BC-B4EB-A793A400DEDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{208574D6-8527-48BC-B4EB-A793A400DEDB}.UNITY_EDITOR|Any CPU.ActiveCfg = UNITY_EDITOR|Any CPU
+		{208574D6-8527-48BC-B4EB-A793A400DEDB}.UNITY_EDITOR|Any CPU.Build.0 = UNITY_EDITOR|Any CPU
+		{4104357F-06FE-442F-A7DA-83D21EFBD991}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4104357F-06FE-442F-A7DA-83D21EFBD991}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4104357F-06FE-442F-A7DA-83D21EFBD991}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4104357F-06FE-442F-A7DA-83D21EFBD991}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4104357F-06FE-442F-A7DA-83D21EFBD991}.UNITY_EDITOR|Any CPU.ActiveCfg = UNITY_EDITOR|Any CPU
+		{4104357F-06FE-442F-A7DA-83D21EFBD991}.UNITY_EDITOR|Any CPU.Build.0 = UNITY_EDITOR|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

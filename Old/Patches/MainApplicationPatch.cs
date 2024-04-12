@@ -13,25 +13,18 @@ namespace SkinService.Patches
     {
         private static readonly bool Is330Up = SkinServicePlugin.GameVersion > new Version("0.12.12.20243");
 
-        private static readonly MethodBase MainApplicationBase;
-
-        static MainApplicationPatch()
+        protected override MethodBase GetTargetMethod()
         {
             BindingFlags flags = BindingFlags.DeclaredOnly | BindingFlags.NonPublic | BindingFlags.Instance;
 
             if (Is330Up)
             {
-                MainApplicationBase = RefHelp.GetEftMethod(x => x.Name == "TarkovApplication", flags, x => x.IsAssembly);
+                return RefHelp.GetEftMethod(x => x.Name == "TarkovApplication", flags, x => x.IsAssembly);
             }
             else
             {
-                MainApplicationBase = RefHelp.GetEftMethod(x => x.Name == "MainApplication", flags, x => x.IsAssembly);
+                return RefHelp.GetEftMethod(x => x.Name == "MainApplication", flags, x => x.IsAssembly);
             }
-        }
-
-        protected override MethodBase GetTargetMethod()
-        {
-            return MainApplicationBase;
         }
 
         [PatchPostfix]
@@ -60,19 +53,19 @@ namespace SkinService.Patches
 
             SkinServicePlugin.AllSkinInfo.SkinInfo info = SkinServicePlugin.AllSkinInfos.Who[0];
 
-            info.Profile = new Profile[]
+            info.Profile = new[]
             {
                 scavProfile,
                 pmcProfile
             };
 
-            info.Customization = new Dictionary<EBodyModelPart, string>[]
+            info.Customization = new[]
             {
                 Traverse.Create(scavProfile).Field("Customization").GetValue<Dictionary<EBodyModelPart, string>>(),
                 Traverse.Create(pmcProfile).Field("Customization").GetValue<Dictionary<EBodyModelPart, string>>()
             };
 
-            info.InfoClass = new InfoClass[]
+            info.InfoClass = new[]
             {
                 scavProfile.Info,
                 pmcProfile.Info
