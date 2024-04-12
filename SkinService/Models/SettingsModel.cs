@@ -2,12 +2,15 @@
 
 using System.Diagnostics.CodeAnalysis;
 using BepInEx.Configuration;
+using UnityEngine;
 
 namespace SkinService.Models
 {
     internal class SettingsModel
     {
         public static SettingsModel Instance { get; private set; }
+
+        public readonly ConfigEntry<Vector2> KeyDefaultPosition;
 
         public readonly ConfigEntry<int> KeySortingOrder;
 
@@ -16,6 +19,7 @@ namespace SkinService.Models
         {
             const string mainSettings = "Skin Service Settings";
 
+            KeyDefaultPosition = configFile.Bind<Vector2>(mainSettings, "Default Position", Vector2.zero);
             KeySortingOrder = configFile.Bind<int>(mainSettings, "Sorting Order", 29997);
         }
 

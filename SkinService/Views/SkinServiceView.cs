@@ -49,13 +49,14 @@ namespace SkinService.Views
             get => windowRoot.gameObject.activeSelf;
             set
             {
-#if !UNITY_EDITOR
                 if (State == value)
                     return;
 
+#if !UNITY_EDITOR
+
                 if (value)
                 {
-                    //_windowRect.anchoredPosition = SettingsModel.Instance.KeyDefaultPosition.Value;
+                    _windowRect.anchoredPosition = SettingsModel.Instance.KeyDefaultPosition.Value;
 
                     UpdateSkinService();
                 }
