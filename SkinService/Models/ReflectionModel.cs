@@ -45,7 +45,7 @@ namespace SkinService.Models
 
         private readonly Func<PlayerBody, object, object, BindableState<Item>, int,
                 EPlayerSide, Task>
-            _refOldPlayerBodyInit;
+            _refBelow358PlayerBodyInit;
 
         private ReflectionModel()
         {
@@ -81,7 +81,7 @@ namespace SkinService.Models
             }
             else
             {
-                _refOldPlayerBodyInit = RefHelper
+                _refBelow358PlayerBodyInit = RefHelper
                     .ObjectMethodDelegate<Func<PlayerBody, object, object, BindableState<Item>, int,
                         EPlayerSide, Task>>(typeof(PlayerBody).GetMethod("Init", RefTool.Public));
             }
@@ -94,7 +94,7 @@ namespace SkinService.Models
             return EFTVersion.AkiVersion > EFTVersion.Parse("3.5.8")
                 ? _refPlayerBodyInit(instance, customization, equipment, itemInHands, layer, playerSide,
                     playerProfileID)
-                : _refOldPlayerBodyInit(instance, customization, equipment, itemInHands, layer, playerSide);
+                : _refBelow358PlayerBodyInit(instance, customization, equipment, itemInHands, layer, playerSide);
         }
     }
 }
