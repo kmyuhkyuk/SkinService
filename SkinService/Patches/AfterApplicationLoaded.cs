@@ -13,6 +13,8 @@ namespace SkinService
 
             skinServiceModel.PlayerSkin = new PlayerSkinModel(_SessionHelper.Profile);
             skinServiceModel.ScavPlayerSkin = new PlayerSkinModel(_SessionHelper.ProfileOfPet);
+
+            skinServiceModel.UpdateSkinService();
         }
     }
 }

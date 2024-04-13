@@ -3,7 +3,6 @@
 using EFT;
 using EFTApi.Helpers;
 
-
 namespace SkinService.Models
 {
     internal class VoiceModel : SkinModel

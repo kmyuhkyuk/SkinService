@@ -64,8 +64,6 @@ namespace SkinService
             skinServiceModel.HeadSkins = headSkinList.ToArray();
             skinServiceModel.HandsSkins = handsSkinList.ToArray();
             skinServiceModel.Voices = voiceList.ToArray();
-
-            skinServiceModel.UpdateSkinService();
         }
     }
 }

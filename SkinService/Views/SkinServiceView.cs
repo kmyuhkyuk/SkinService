@@ -77,6 +77,8 @@ namespace SkinService.Views
 
             closeButton.onClick.AddListener(() => State = false);
 
+            UpdateSkinServiceName();
+
             bodySkin.Init("Body", () => UpdateSkinIndex(bodySkin, EBodyModelPart.Body));
             feetSkin.Init("Feet", () => UpdateSkinIndex(feetSkin, EBodyModelPart.Feet));
             headSkin.Init("Head", () => UpdateSkinIndex(headSkin, EBodyModelPart.Head));
@@ -98,11 +100,12 @@ namespace SkinService.Views
             applyOtherPlayerSkin.Init("Apply Other Player Skin",
                 () =>
                 {
-                    var currentIndex = otherPlayer.CurrentIndex;
+                    var otherPlayerIndex = otherPlayer.CurrentIndex;
 
-                    ChangeOtherSkin(currentIndex, bodySkin.CurrentIndex, feetSkin.CurrentIndex, headSkin.CurrentIndex,
+                    ChangeOtherSkin(otherPlayerIndex, bodySkin.CurrentIndex, feetSkin.CurrentIndex,
+                        headSkin.CurrentIndex,
                         handsSkin.CurrentIndex);
-                    ChangeOtherVoice(currentIndex, voice.CurrentIndex);
+                    ChangeOtherVoice(otherPlayerIndex, voice.CurrentIndex);
                 });
             applyAllOtherPlayerSkin.Init("Apply All Other Player Skin",
                 () =>
@@ -127,11 +130,18 @@ namespace SkinService.Views
                 otherPlayer.CurrentIndex = oldIndex;
             };
             skinServiceModel.ClearOtherPlayer = otherPlayer.ClearDropdown;
+
+            skinServiceModel.OpenSkinServiceView = () => State = true;
+        }
+
+        private void UpdateSkinServiceName()
+        {
+            skinServiceName.text = "Skin Service";
         }
 
         private void UpdateSkinService()
         {
-            skinServiceName.text = "Skin Service";
+            UpdateSkinServiceName();
 
             UpdateSkin(bodySkin, EBodyModelPart.Body);
             UpdateSkin(feetSkin, EBodyModelPart.Feet);

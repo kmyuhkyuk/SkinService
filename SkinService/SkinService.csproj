@@ -84,6 +84,10 @@
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>R:\Battlestate Games\Client.0.12.12.15.17349\EscapeFromTarkov_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>R:\Battlestate Games\Client.0.12.12.15.17349\EscapeFromTarkov_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>R:\Battlestate Games\Client.0.12.12.15.17349\EscapeFromTarkov_Data\Managed\UnityEngine.UI.dll</HintPath>
@@ -94,6 +98,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\ConfigurationManagerAttributes.cs" />
+    <Compile Include="Attributes\EFTConfigurationAttributes.cs" />
+    <Compile Include="Attributes\EFTConfigurationPluginAttributes.cs" />
     <Compile Include="Models\PlayerSkinModel.cs" />
     <Compile Include="Models\ReflectionModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />

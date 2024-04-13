@@ -48,6 +48,8 @@ namespace SkinService.Models
 
         public Action ClearOtherPlayer;
 
+        public Action OpenSkinServiceView;
+
         private SkinServiceModel()
         {
             var canvas = SkinServicePublic.GetComponent<Canvas>();
