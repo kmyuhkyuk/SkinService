@@ -32,7 +32,6 @@ namespace SkinService.Views
         public void Init(string nameKey, Action onResetClick)
         {
             Init(nameKey);
-            resetName.text = ResetNameKey;
             resetButton.onClick.AddListener(new UnityAction(onResetClick));
         }
 
@@ -40,7 +39,6 @@ namespace SkinService.Views
         {
             UpdateDropdown(options);
             CurrentIndex = index;
-            UpdateConfigName();
         }
 
         public void UpdateDropdown(List<string> options)
@@ -52,6 +50,15 @@ namespace SkinService.Views
         public void ClearDropdown()
         {
             dropdown.ClearOptions();
+        }
+
+        protected override void UpdateLocalized()
+        {
+#if !UNITY_EDITOR
+            base.UpdateLocalized();
+            resetName.text = Helpers.LocalizedHelper.Instance.Localized(ResetNameKey);
+
+#endif
         }
     }
 }

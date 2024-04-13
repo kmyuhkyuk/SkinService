@@ -5,12 +5,12 @@ using Aki.Common.Http;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static EFTApi.EFTHelpers;
 #if !UNITY_EDITOR
 using System.Threading.Tasks;
 using SkinService.Models;
 using EFT;
 using Newtonsoft.Json;
+using static EFTApi.EFTHelpers;
 
 #endif
 
@@ -77,7 +77,7 @@ namespace SkinService.Views
 
             closeButton.onClick.AddListener(() => State = false);
 
-            UpdateSkinServiceName();
+            UpdateLocalized();
 
             bodySkin.Init("Body", () => UpdateSkinIndex(bodySkin, EBodyModelPart.Body));
             feetSkin.Init("Feet", () => UpdateSkinIndex(feetSkin, EBodyModelPart.Feet));
@@ -132,23 +132,22 @@ namespace SkinService.Views
             skinServiceModel.ClearOtherPlayer = otherPlayer.ClearDropdown;
 
             skinServiceModel.OpenSkinServiceView = () => State = true;
+
+            Helpers.LocalizedHelper.Instance.LanguageChange += UpdateLocalized;
         }
 
-        private void UpdateSkinServiceName()
+        private void UpdateLocalized()
         {
-            skinServiceName.text = "Skin Service";
+            skinServiceName.text = Helpers.LocalizedHelper.Instance.Localized("SkinService");
         }
 
         private void UpdateSkinService()
         {
-            UpdateSkinServiceName();
-
             UpdateSkin(bodySkin, EBodyModelPart.Body);
             UpdateSkin(feetSkin, EBodyModelPart.Feet);
             UpdateSkin(headSkin, EBodyModelPart.Head);
             UpdateSkin(handsSkin, EBodyModelPart.Hands);
             UpdateVoice(voice);
-            otherPlayer.UpdateConfigName();
         }
 
         private static void ChangeAllOtherSkin(int bodySkinIndex, int feetSkinIndex,

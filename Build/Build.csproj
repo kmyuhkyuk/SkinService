@@ -73,14 +73,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="localized\en.json" />
+    <None Include="localized\zh.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ReadMe.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="localized\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\SkinService\SkinService.csproj">
       <Project>{208574d6-8527-48bc-b4eb-a793a400dedb}</Project>

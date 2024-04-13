@@ -9,16 +9,28 @@ namespace SkinService.Views
 
         protected string ConfigNameKey;
 
+        protected void Start()
+        {
+#if !UNITY_EDITOR
+
+            Helpers.LocalizedHelper.Instance.LanguageChange += UpdateLocalized;
+
+#endif
+        }
+
         public void Init(string nameKey)
         {
             ConfigNameKey = nameKey;
 
-            UpdateConfigName();
+            UpdateLocalized();
         }
 
-        public void UpdateConfigName()
+        protected virtual void UpdateLocalized()
         {
-            configName.text = ConfigNameKey;
+#if !UNITY_EDITOR
+            configName.text = Helpers.LocalizedHelper.Instance.Localized(ConfigNameKey);
+
+#endif
         }
     }
 }

@@ -98,9 +98,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AcceptableValue\AcceptableValueCustomList.cs" />
     <Compile Include="Attributes\ConfigurationManagerAttributes.cs" />
     <Compile Include="Attributes\EFTConfigurationAttributes.cs" />
     <Compile Include="Attributes\EFTConfigurationPluginAttributes.cs" />
+    <Compile Include="Helpers\LocalizedHelper.cs" />
     <Compile Include="Models\PlayerSkinModel.cs" />
     <Compile Include="Models\ReflectionModel.cs" />
     <Compile Include="Models\SettingsModel.cs" />

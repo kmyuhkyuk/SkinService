@@ -1,12 +1,14 @@
 ﻿#if !UNITY_EDITOR
 
 using BepInEx;
+using SkinService.Attributes;
 using SkinService.Models;
 using static EFTApi.EFTHelpers;
 
 namespace SkinService
 {
     [BepInPlugin("com.kmyuhkyuk.SkinService", "SkinService", "1.1.4")]
+    [EFTConfigurationPluginAttributes("https://hub.sp-tarkov.com/files/file/781-skin-service")]
     public partial class SkinServicePlugin : BaseUnityPlugin
     {
         private void Awake()

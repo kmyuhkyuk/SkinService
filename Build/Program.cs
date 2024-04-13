@@ -25,8 +25,8 @@ namespace Build
 
             try
             {
-                //Copy.CopyFolder(arg, "Release", Path.Combine(baseDirectory, "localized"),
-                //Path.Combine(modPath, "localized"));
+                Copy.CopyFolder(arg, "Release", Path.Combine(baseDirectory, "localized"),
+                    Path.Combine(modPath, "localized"));
 
                 Copy.CopyAssembly(arg, "Release", baseDirectory, modPath, new[]
                 {

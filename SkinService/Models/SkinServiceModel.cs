@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using EFT;
 using EFTUtils;
+using Newtonsoft.Json;
+using SkinService.Helpers;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -64,6 +66,11 @@ namespace SkinService.Models
 
             Object.DontDestroyOnLoad(SkinServicePublic);
 
+            foreach (var keyValue in GetLanguageDictionary())
+            {
+                LocalizedHelper.Instance.LanguageDictionary.Add(keyValue.Key, keyValue.Value);
+            }
+
             var assetBundle = AssetBundleHelper.LoadBundle(Path.Combine(ModPath, "bundles", "skinservice.bundle"));
 
             Object.Instantiate(
@@ -77,6 +84,24 @@ namespace SkinService.Models
             canvas.sortingOrder = settingsModel.KeySortingOrder.Value;
             settingsModel.KeySortingOrder.SettingChanged +=
                 (value, value2) => canvas.sortingOrder = settingsModel.KeySortingOrder.Value;
+        }
+
+        private Dictionary<string, Dictionary<string, string>> GetLanguageDictionary()
+        {
+            var localizedDictionary = new Dictionary<string, Dictionary<string, string>>();
+
+            var localizedDirectory = new DirectoryInfo(Path.Combine(ModPath, "localized"));
+
+            if (!localizedDirectory.Exists)
+                return localizedDictionary;
+
+            foreach (var localized in localizedDirectory.GetFiles("*.json"))
+            {
+                localizedDictionary.Add(Path.GetFileNameWithoutExtension(localized.Name),
+                    JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(localized.FullName)));
+            }
+
+            return localizedDictionary;
         }
 
         public bool TryGetSkinModelArray(EBodyModelPart bodyPart, out SkinModel[] skinModelArray)

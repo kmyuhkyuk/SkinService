@@ -1,0 +1,19 @@
+﻿{
+  "SkinService": "Skin Service",
+  "Main Settings": "Main Settings",
+  "Default Position": "Default Position",
+  "Language": "Language",
+  "Sorting Order": "Sorting Order",
+  "Body": "Body",
+  "Feet": "Feet",
+  "Head": "Head",
+  "Hands": "Hands",
+  "Apply Current Player Skin": "Apply Current Player Skin",
+  "Apply Scav Player Skin": "Apply Scav Player Skin",
+  "Other Player": "Other Player",
+  "Apply Other Player Skin": "Apply Other Player Skin",
+  "Apply All Other Player Skin": "Apply All Other Player Skin",
+  "Preferred language, if not available will tried English, if still not available than return original text": "Preferred language, if not available will tried English, if still not available than return original text",
+  "Voice": "Voice",
+  "Open Skin Service Window": "Open Skin Service Window"
+}
