@@ -40,7 +40,8 @@ namespace Build
                 }, sha);
 
                 Copy.GenerateSevenZip(arg, "Release", modPath, releaseName, @"BepInEx\plugins", Array.Empty<string>(),
-                    Array.Empty<string>(), new[] { Path.Combine(baseDirectory, "ReadMe.txt") }, Array.Empty<string>());
+                    Array.Empty<string>(), new[] { Path.Combine(baseDirectory, "ReadMe.txt") },
+                    new[] { Path.Combine(baseDirectory, "SkinService_ServerMod") });
 
                 //Unity
 
