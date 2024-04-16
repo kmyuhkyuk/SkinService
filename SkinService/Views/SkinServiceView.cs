@@ -131,7 +131,11 @@ namespace SkinService.Views
             };
             skinServiceModel.ClearOtherPlayer = otherPlayer.ClearDropdown;
 
-            skinServiceModel.OpenSkinServiceView = () => State = true;
+            skinServiceModel.OpenSkinServiceView = () =>
+            {
+                State = false;
+                State = true;
+            };
 
             Helpers.LocalizedHelper.Instance.LanguageChange += UpdateLocalized;
         }
