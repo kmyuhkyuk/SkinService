@@ -15,5 +15,6 @@
   "Apply All Other Player Skin": "应用所有其他玩家服装",
   "Preferred language, if not available will tried English, if still not available than return original text": "首选语言, 如果语言不存在则尝试使用英语, 仍然不存在则使用原始文本",
   "Voice": "语音",
-  "Open Skin Service Window": "打开服装服务窗口"
+  "Open Skin Service Window": "打开服装服务窗口",
+  "Reset": "重置"
 }
