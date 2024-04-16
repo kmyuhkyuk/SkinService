@@ -1,0 +1,8 @@
+{
+	"name": "SkinService",
+	"author": "kmyuhkyuk",
+	"version": "1.0.0",
+	"akiVersion": "3.8.0",
+	"license": "GNU GPLv3",
+	"main": "src/SkinService.js"
+}

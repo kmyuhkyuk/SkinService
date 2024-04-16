@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="SkinService_ServerMod\package.json" />
     <None Include="localized\en.json" />
     <None Include="localized\zh.json" />
     <None Include="packages.config" />
@@ -87,6 +88,11 @@
       <Name>SkinService</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="SkinService_ServerMod\src\ISkinRequestData.ts" />
+    <TypeScriptCompile Include="SkinService_ServerMod\src\IVoiceRequestData.ts" />
+    <TypeScriptCompile Include="SkinService_ServerMod\src\SkinService.ts" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -100,6 +106,7 @@
   <Import Project="..\packages\7z.Libs.23.01.0\build\net\7z.Libs.targets" Condition="Exists('..\packages\7z.Libs.23.01.0\build\net\7z.Libs.targets')" />
   <PropertyGroup>
     <PostBuildEvent>xcopy $(ProjectDir)localized\ $(TargetDir)localized\ /E /Y
+xcopy $(ProjectDir)SkinService_ServerMod\ $(TargetDir)SkinService_ServerMod\ /E /Y
 start $(TargetPath) $(ConfigurationName) $(SolutionDir)</PostBuildEvent>
   </PropertyGroup>
 </Project>

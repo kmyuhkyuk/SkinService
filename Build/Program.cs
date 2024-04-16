@@ -19,12 +19,18 @@ namespace Build
             const string modPath =
                 @"R:\Battlestate Games\Client.0.14.1.2.29197\BepInEx\Plugins\kmyuhkyuk-SkinService";
 
+            const string serverModsPath =
+                @"R:\Battlestate Games\Client.0.14.1.2.29197\user\mods";
+
             var versionName = "1.1.4";
 
             var releaseName = $"{new DirectoryInfo(modPath).Name}-(Release_{versionName}).7z";
 
             try
             {
+                Copy.CopyFolder(arg, "Release", Path.Combine(baseDirectory, "SkinService_ServerMod"),
+                    Path.Combine(serverModsPath, "kmyuhkyuk-SkinService"));
+
                 Copy.CopyFolder(arg, "Release", Path.Combine(baseDirectory, "localized"),
                     Path.Combine(modPath, "localized"));
 

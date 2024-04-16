@@ -87,6 +87,7 @@ namespace SkinService.Models
             }
         }
 
+        // ReSharper disable once InconsistentNaming
         public Task PlayerBodyInit(PlayerBody instance, object customization,
             object equipment, BindableState<Item> itemInHands, int layer, EPlayerSide playerSide,
             string playerProfileID)
