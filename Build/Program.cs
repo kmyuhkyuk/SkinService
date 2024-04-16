@@ -28,7 +28,9 @@ namespace Build
 
             try
             {
-                Copy.CopyFolder(arg, "Release", Path.Combine(baseDirectory, "SkinService_ServerMod"),
+                var skinServiceServerModPath = Path.Combine(baseDirectory, "SkinService_ServerMod");
+
+                Copy.CopyFolder(arg, "Release", skinServiceServerModPath,
                     Path.Combine(serverModsPath, "kmyuhkyuk-SkinService"));
 
                 Copy.CopyFolder(arg, "Release", Path.Combine(baseDirectory, "localized"),
@@ -41,7 +43,7 @@ namespace Build
 
                 Copy.GenerateSevenZip(arg, "Release", modPath, releaseName, @"BepInEx\plugins", Array.Empty<string>(),
                     Array.Empty<string>(), new[] { Path.Combine(baseDirectory, "ReadMe.txt") },
-                    new[] { Path.Combine(baseDirectory, "SkinService_ServerMod") });
+                    new[] { skinServiceServerModPath });
 
                 //Unity
 
