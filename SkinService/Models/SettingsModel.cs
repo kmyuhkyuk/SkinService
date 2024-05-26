@@ -13,6 +13,8 @@ namespace SkinService.Models
     {
         public static SettingsModel Instance { get; private set; }
 
+        public readonly ConfigEntry<KeyboardShortcut> KeySkinServiceShortcut;
+
         public readonly ConfigEntry<Vector2> KeyDefaultPosition;
 
         public readonly ConfigEntry<string> KeyLanguage;
@@ -33,6 +35,9 @@ namespace SkinService.Models
             configFile.Bind(mainSettings, "Open Skin Service Window", string.Empty,
                 new ConfigDescription(string.Empty, null, new ConfigurationManagerAttributes { Browsable = false },
                     new EFTConfigurationAttributes { ButtonAction = OpenSkinServiceView }));
+
+            KeySkinServiceShortcut = configFile.Bind<KeyboardShortcut>(mainSettings, "Skin Service Shortcut",
+                new KeyboardShortcut(KeyCode.None));
 
             KeyDefaultPosition = configFile.Bind<Vector2>(mainSettings, "Default Position", new Vector2(800, 0));
             KeySortingOrder = configFile.Bind<int>(mainSettings, "Sorting Order", 29997);

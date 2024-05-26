@@ -22,7 +22,7 @@ namespace Build
             const string gamePath =
                 @"R:\Battlestate Games\Client.0.14.1.2.29197";
 
-            var versionName = "1.1.4";
+            var versionName = "1.2.0";
 
             var releaseName = $"{new DirectoryInfo(modPath).Name}-(Release_{versionName}).7z";
 

@@ -2,8 +2,8 @@ import { DependencyContainer } from "tsyringe";
 import type { IPreAkiLoadMod } from "@spt-aki/models/external/IPreAkiLoadMod";
 import type {DynamicRouterModService} from "@spt-aki/services/mod/dynamicRouter/DynamicRouterModService";
 import { ProfileHelper } from "@spt-aki/helpers/ProfileHelper";
-import { ISkinRequestData } from "./ISkinRequestData"
-import { IVoiceRequestData } from "./IVoiceRequestData";
+import { ISkinRequestModel } from "./Models/ISkinRequestModel";
+import { IVoiceRequestModel } from "./Models/IVoiceRequestModel";
 
 class SkinService implements IPreAkiLoadMod
 {
@@ -17,7 +17,7 @@ class SkinService implements IPreAkiLoadMod
             [
                 {
                     url: "/skin-service/pmc/change",
-                    action: (url, info : ISkinRequestData, sessionId) => 
+                    action: (url, info : ISkinRequestModel, sessionId) => 
                     {
                         const pmcData = profileHelper.getPmcProfile(sessionId);
 
@@ -31,7 +31,7 @@ class SkinService implements IPreAkiLoadMod
                 },
                 {
                     url: "/skin-service/pmc/voice/change",
-                    action: (url, info : IVoiceRequestData, sessionId) => 
+                    action: (url, info : IVoiceRequestModel, sessionId) => 
                     {
                         const pmcData = profileHelper.getPmcProfile(sessionId);
 
@@ -42,7 +42,7 @@ class SkinService implements IPreAkiLoadMod
                 },
                 {
                     url: "/skin-service/scav/change",
-                    action: (url, info : ISkinRequestData, sessionId) => 
+                    action: (url, info : ISkinRequestModel, sessionId) => 
                     {
                         const scavData = profileHelper.getScavProfile(sessionId);
 
@@ -56,7 +56,7 @@ class SkinService implements IPreAkiLoadMod
                 },
                 {
                     url: "/skin-service/scav/voice/change",
-                    action: (url, info : IVoiceRequestData, sessionId) => 
+                    action: (url, info : IVoiceRequestModel, sessionId) => 
                     {
                         const scavData = profileHelper.getScavProfile(sessionId);
 

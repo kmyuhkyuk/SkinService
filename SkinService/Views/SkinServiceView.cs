@@ -140,6 +140,14 @@ namespace SkinService.Views
             Helpers.LocalizedHelper.Instance.LanguageChange += UpdateLocalized;
         }
 
+        private void Update()
+        {
+            if (SettingsModel.Instance.KeySkinServiceShortcut.Value.IsDown())
+            {
+                State = !State;
+            }
+        }
+
         private void UpdateLocalized()
         {
             skinServiceName.text = Helpers.LocalizedHelper.Instance.Localized("SkinService");

@@ -1,4 +1,4 @@
-export interface ISkinRequestData
+export interface ISkinRequestModel
 {
     bodyId: string;
     feetId: string;

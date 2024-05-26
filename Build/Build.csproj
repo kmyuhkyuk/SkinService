@@ -91,8 +91,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="SkinService_ServerMod\user\mods\kmyuhkyuk-SkinService\src\ISkinRequestData.ts" />
-    <TypeScriptCompile Include="SkinService_ServerMod\user\mods\kmyuhkyuk-SkinService\src\IVoiceRequestData.ts" />
+    <TypeScriptCompile Include="SkinService_ServerMod\user\mods\kmyuhkyuk-SkinService\src\Models\ISkinRequestModel.ts" />
+    <TypeScriptCompile Include="SkinService_ServerMod\user\mods\kmyuhkyuk-SkinService\src\Models\IVoiceRequestModel.ts" />
     <TypeScriptCompile Include="SkinService_ServerMod\user\mods\kmyuhkyuk-SkinService\src\SkinService.ts" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
