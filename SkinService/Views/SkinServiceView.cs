@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Aki.Common.Http;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -207,7 +206,7 @@ namespace SkinService.Views
         private static void RequestSkin(string bodySkin, string feetSkin,
             string headSkin, string handsSkin, bool isScav)
         {
-            RequestHandler.PutJson(isScav ? "/skin-service/scav/change" : "/skin-service/pmc/change",
+            _RequestHandlerHelper.PutJson(isScav ? "/skin-service/scav/change" : "/skin-service/pmc/change",
                 JsonConvert.SerializeObject(new
                 {
                     bodyId = bodySkin,
@@ -288,7 +287,7 @@ namespace SkinService.Views
 
         private static void RequestVoice(string voice, bool isScav)
         {
-            RequestHandler.PutJson(isScav ? "/skin-service/scav/voice/change" : "/skin-service/pmc/voice/change",
+            _RequestHandlerHelper.PutJson(isScav ? "/skin-service/scav/voice/change" : "/skin-service/pmc/voice/change",
                 JsonConvert.SerializeObject(new
                 {
                     voiceId = voice
