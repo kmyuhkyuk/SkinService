@@ -88,9 +88,8 @@ namespace SkinService.Models
         }
 
         // ReSharper disable once InconsistentNaming
-        public Task PlayerBodyInit(PlayerBody instance, object customization,
-            object equipment, BindableState<Item> itemInHands, int layer, EPlayerSide playerSide,
-            string playerProfileID)
+        public Task PlayerBodyInit(PlayerBody instance, object customization, object equipment,
+            BindableState<Item> itemInHands, int layer, EPlayerSide playerSide, string playerProfileID = "")
         {
             return EFTVersion.AkiVersion > EFTVersion.Parse("3.5.8")
                 ? _refPlayerBodyInit(instance, customization, equipment, itemInHands, layer, playerSide,

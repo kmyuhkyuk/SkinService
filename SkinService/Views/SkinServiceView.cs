@@ -245,7 +245,7 @@ namespace SkinService.Views
 
             await ReflectionModel.Instance.PlayerBodyInit(playerSkinModel.PlayerBody, playerSkinModel.Customization,
                 playerSkinModel.Equipment, playerSkinModel.ItemInHands, LayerMask.NameToLayer("Player"),
-                playerSkinModel.Side, string.Empty);
+                playerSkinModel.Side);
 
             playerSkinModel.PlayerBody.UpdatePlayerRenders(playerSkinModel.PointOfView, playerSkinModel.Side);
         }
