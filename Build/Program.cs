@@ -16,7 +16,7 @@ namespace Build
             var arg = args.ElementAtOrDefault(0);
             var sha = Copy.GetTipSha(args.ElementAtOrDefault(1));
 
-            const string gamePath = @"R:\Battlestate Games\Client.0.14.9.0.30473";
+            const string gamePath = @"R:\Battlestate Games\Client.0.14.9.1.30626";
 
             var modPath = $@"{gamePath}\BepInEx\plugins\kmyuhkyuk-SkinService";
 
