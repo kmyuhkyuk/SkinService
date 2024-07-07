@@ -1,7 +1,7 @@
 {
 	"name": "SkinService",
 	"author": "kmyuhkyuk",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"sptVersion": "3.9.0",
 	"license": "GNU GPLv3",
 	"main": "src/SkinService.js"
