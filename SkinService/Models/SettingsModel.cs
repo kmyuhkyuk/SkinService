@@ -52,10 +52,8 @@ namespace SkinService.Models
 
             var acceptableValueCustomList =
                 (AcceptableValueCustomList<string>)KeyLanguage.Description.AcceptableValues;
-            localizedHelper.LanguageAdd += () =>
-            {
-                acceptableValueCustomList.AcceptableValuesCustom = localizedHelper.Languages;
-            };
+            localizedHelper.LanguageAdd +=
+                () => acceptableValueCustomList.AcceptableValuesCustom = localizedHelper.Languages;
 
             localizedHelper.CurrentLanguage = KeyLanguage.Value;
             KeyLanguage.SettingChanged += (value, value2) =>
