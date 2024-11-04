@@ -143,7 +143,7 @@ namespace SkinService.Models
             if (CurrentPlayerSkin == null)
                 return false;
 
-            currentSkin = CurrentPlayerSkin.Customization[bodyPart];
+            currentSkin = CurrentPlayerSkin.Customization[bodyPart].ToString();
 
             return true;
         }

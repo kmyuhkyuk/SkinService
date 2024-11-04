@@ -1,6 +1,6 @@
 ﻿#if !UNITY_EDITOR
 
-using System.Collections.Generic;
+using System.Collections;
 using EFT;
 using EFT.InventoryLogic;
 using static EFTApi.EFTHelpers;
@@ -17,7 +17,7 @@ namespace SkinService.Models
 
         public InfoClass InfoClass => Profile.Info;
 
-        public Dictionary<EBodyModelPart, string> Customization =>
+        public IDictionary Customization =>
             ReflectionModel.Instance.RefCustomization.GetValue(Profile);
 
         public string Nickname => Profile.Nickname;

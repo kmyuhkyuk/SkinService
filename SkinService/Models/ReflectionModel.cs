@@ -8,6 +8,7 @@ using EFT;
 using EFT.InventoryLogic;
 using EFTApi;
 using EFTReflection;
+using UnityEngine;
 
 namespace SkinService.Models
 {
@@ -19,7 +20,7 @@ namespace SkinService.Models
 
         public readonly RefHelper.FieldRef<object, EBodyModelPart> RefBodyPart;
 
-        public readonly RefHelper.FieldRef<object, string> RefId;
+        public readonly RefHelper.FieldRef<object, object> RefId;
 
         public readonly RefHelper.FieldRef<object, string> RefName;
 
@@ -27,7 +28,7 @@ namespace SkinService.Models
 
         public readonly RefHelper.FieldRef<object, ResourceKey> RefWatchPrefab;
 
-        public readonly RefHelper.FieldRef<Profile, Dictionary<EBodyModelPart, string>> RefCustomization;
+        public readonly RefHelper.FieldRef<Profile, IDictionary> RefCustomization;
 
         public readonly RefHelper.FieldRef<Player, BindableState<Item>> RefItemInHands;
 
@@ -39,9 +40,13 @@ namespace SkinService.Models
 
         public readonly RefHelper.HookRef CustomizationClassConstructor;
 
+        private readonly
+            Func<PlayerBody, object, object, BindableState<Item>, int, EPlayerSide, string,
+                Dictionary<EquipmentSlot, Transform>, bool, Task> _refPlayerBodyInit;
+
         private readonly Func<PlayerBody, object, object, BindableState<Item>, int,
                 EPlayerSide, string, Task>
-            _refPlayerBodyInit;
+            _refBelow310PlayerBodyInit;
 
         private readonly Func<PlayerBody, object, object, BindableState<Item>, int,
                 EPlayerSide, Task>
@@ -57,14 +62,14 @@ namespace SkinService.Models
             var templateType = RefTemplates.PropertyType.GetElementType();
 
             RefBodyPart = RefHelper.FieldRef<object, EBodyModelPart>.Create(templateType, "BodyPart");
-            RefId = RefHelper.FieldRef<object, string>.Create(templateType, "Id");
+            RefId = RefHelper.FieldRef<object, object>.Create(templateType, "Id");
             RefName = RefHelper.FieldRef<object, string>.Create(templateType, "Name");
             RefPrefab = RefHelper.FieldRef<object, ResourceKey>.Create(templateType, "Prefab");
             RefWatchPrefab = RefHelper.FieldRef<object, ResourceKey>.Create(templateType, "WatchPrefab");
 
             RefNameLocalizationKey = RefHelper.PropertyRef<object, string>.Create(templateType, "NameLocalizationKey");
 
-            RefCustomization = RefHelper.FieldRef<Profile, Dictionary<EBodyModelPart, string>>.Create("Customization");
+            RefCustomization = RefHelper.FieldRef<Profile, IDictionary>.Create("Customization");
 
             RefVoices = RefHelper.PropertyRef<object, IEnumerable>.Create(customizationClassType, "Voices");
 
@@ -72,12 +77,24 @@ namespace SkinService.Models
 
             RefItemInHands = RefHelper.FieldRef<Player, BindableState<Item>>.Create("_itemInHands");
 
-            if (EFTVersion.AkiVersion > EFTVersion.Parse("3.5.8"))
+            if (EFTVersion.AkiVersion > EFTVersion.Parse("3.9.8"))
             {
-                _refPlayerBodyInit = RefHelper
-                    .ObjectMethodDelegate<Func<PlayerBody, object, object, BindableState<Item>, int,
-                        EPlayerSide, string, Task>>(RefTool.GetEftMethod(typeof(PlayerBody), RefTool.Public,
-                        x => x.GetParameters().Length == 6));
+                _refPlayerBodyInit =
+                    RefHelper
+                        .ObjectMethodDelegate<
+                            Func<PlayerBody, object, object, BindableState<Item>, int, EPlayerSide, string,
+                                Dictionary<EquipmentSlot, Transform>, bool, Task>>(
+                            RefTool.GetEftMethod(typeof(PlayerBody), RefTool.Public,
+                                x => x.Name == "Init" && x.GetParameters().Length == 8));
+            }
+            else if (EFTVersion.AkiVersion > EFTVersion.Parse("3.5.8"))
+            {
+                _refBelow310PlayerBodyInit =
+                    RefHelper
+                        .ObjectMethodDelegate<
+                            Func<PlayerBody, object, object, BindableState<Item>, int, EPlayerSide, string, Task>>(
+                            RefTool.GetEftMethod(typeof(PlayerBody), RefTool.Public,
+                                x => x.Name == "Init" && x.GetParameters().Length == 6));
             }
             else
             {
@@ -89,12 +106,23 @@ namespace SkinService.Models
 
         // ReSharper disable once InconsistentNaming
         public Task PlayerBodyInit(PlayerBody instance, object customization, object equipment,
-            BindableState<Item> itemInHands, int layer, EPlayerSide playerSide, string playerProfileID = "")
+            BindableState<Item> itemInHands, int layer, EPlayerSide playerSide, string playerProfileID = "",
+            Dictionary<EquipmentSlot, Transform> alternativeBones = null, bool isYourPlayer = false)
         {
-            return EFTVersion.AkiVersion > EFTVersion.Parse("3.5.8")
-                ? _refPlayerBodyInit(instance, customization, equipment, itemInHands, layer, playerSide,
-                    playerProfileID)
-                : _refBelow358PlayerBodyInit(instance, customization, equipment, itemInHands, layer, playerSide);
+            if (EFTVersion.AkiVersion > EFTVersion.Parse("3.9.8"))
+            {
+                return _refPlayerBodyInit(instance, customization, equipment, itemInHands, layer, playerSide,
+                    playerProfileID, alternativeBones, isYourPlayer);
+            }
+            else if (EFTVersion.AkiVersion > EFTVersion.Parse("3.5.8"))
+            {
+                return _refBelow310PlayerBodyInit(instance, customization, equipment, itemInHands, layer, playerSide,
+                    playerProfileID);
+            }
+            else
+            {
+                return _refBelow358PlayerBodyInit(instance, customization, equipment, itemInHands, layer, playerSide);
+            }
         }
     }
 }

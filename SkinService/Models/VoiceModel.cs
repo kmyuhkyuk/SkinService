@@ -9,7 +9,7 @@ namespace SkinService.Models
     {
         public readonly ResourceKey VoicePrefab;
 
-        public VoiceModel(string id, string name, string nameLocalizationKey) : base(id, name, nameLocalizationKey,
+        public VoiceModel(object id, string name, string nameLocalizationKey) : base(id, name, nameLocalizationKey,
             null, null)
         {
             VoicePrefab = new ResourceKey

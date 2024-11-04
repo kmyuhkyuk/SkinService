@@ -7,7 +7,7 @@ namespace SkinService.Models
 {
     internal class SkinModel
     {
-        public readonly string Id;
+        public readonly object Id;
 
         public readonly string Name;
 
@@ -29,7 +29,7 @@ namespace SkinService.Models
 
         public readonly ResourceKey WatchPrefab;
 
-        public SkinModel(string id, string name, string nameLocalizationKey, ResourceKey prefab,
+        public SkinModel(object id, string name, string nameLocalizationKey, ResourceKey prefab,
             ResourceKey watchPrefab)
         {
             Id = id;

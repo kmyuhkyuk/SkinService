@@ -203,16 +203,16 @@ namespace SkinService.Views
                 feetSkin, headSkin, handsSkin);
         }
 
-        private static void RequestSkin(string bodySkin, string feetSkin,
-            string headSkin, string handsSkin, bool isScav)
+        private static void RequestSkin(object bodySkinId, object feetSkinId,
+            object headSkinId, object handsSkinId, bool isScav)
         {
             _RequestHandlerHelper.PutJson(isScav ? "/skin-service/scav/change" : "/skin-service/pmc/change",
                 JsonConvert.SerializeObject(new
                 {
-                    bodyId = bodySkin,
-                    feetId = feetSkin,
-                    headId = headSkin,
-                    handsId = handsSkin
+                    bodyId = bodySkinId,
+                    feetId = feetSkinId,
+                    headId = headSkinId,
+                    handsId = handsSkinId
                 }));
         }
 
