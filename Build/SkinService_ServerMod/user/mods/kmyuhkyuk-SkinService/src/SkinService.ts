@@ -1,6 +1,6 @@
 import { DependencyContainer } from "tsyringe";
-import type { IPreSptLoadMod } from "@spt/models/external/IPreSptLoadMod";
-import type { DynamicRouterModService } from "@spt/services/mod/dynamicRouter/DynamicRouterModService";
+import { IPreSptLoadMod } from "@spt/models/external/IPreSptLoadMod";
+import { DynamicRouterModService } from "@spt/services/mod/dynamicRouter/DynamicRouterModService";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { ISkinRequestModel } from "./Models/ISkinRequestModel";
 import { IVoiceRequestModel } from "./Models/IVoiceRequestModel";
