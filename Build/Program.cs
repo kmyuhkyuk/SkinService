@@ -20,7 +20,7 @@ namespace Build
 
             var modPath = $@"{gamePath}\BepInEx\plugins\kmyuhkyuk-SkinService";
 
-            const string versionName = "1.3.0";
+            const string versionName = "1.3.1";
 
             var releaseName = $"{new DirectoryInfo(modPath).Name}(Release_{versionName}).7z";
 

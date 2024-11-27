@@ -7,7 +7,7 @@ using static EFTApi.EFTHelpers;
 
 namespace SkinService
 {
-    [BepInPlugin("com.kmyuhkyuk.SkinService", "SkinService", "1.3.0")]
+    [BepInPlugin("com.kmyuhkyuk.SkinService", "SkinService", "1.3.1")]
     [BepInDependency("com.kmyuhkyuk.EFTApi", "1.3.0")]
     [EFTConfigurationPluginAttributes("https://hub.sp-tarkov.com/files/file/781-skin-service")]
     public partial class SkinServicePlugin : BaseUnityPlugin
