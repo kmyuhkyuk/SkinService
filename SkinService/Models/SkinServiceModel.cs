@@ -136,14 +136,14 @@ namespace SkinService.Models
             return voiceModelArray != null;
         }
 
-        public bool TryGetCurrentSkin(EBodyModelPart bodyPart, out string currentSkin)
+        public bool TryGetCurrentSkin(EBodyModelPart bodyPart, out object currentSkin)
         {
             currentSkin = string.Empty;
 
             if (CurrentPlayerSkin == null)
                 return false;
 
-            currentSkin = CurrentPlayerSkin.Customization[bodyPart].ToString();
+            currentSkin = CurrentPlayerSkin.Customization[bodyPart];
 
             return true;
         }

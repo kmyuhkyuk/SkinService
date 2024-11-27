@@ -360,9 +360,9 @@ namespace SkinService.Views
             }
         }
 
-        private static int FindSkinIndex(IEnumerable<SkinModel> skinModelEnumerable, string id)
+        private static int FindSkinIndex(IEnumerable<SkinModel> skinModelEnumerable, object id)
         {
-            return FindIndex(skinModelEnumerable, x => x.Id == id);
+            return FindIndex(skinModelEnumerable, x => x.Id.Equals(id));
         }
 
         private static int FindVoiceIndex(IEnumerable<VoiceModel> skinModelEnumerable, string id)
